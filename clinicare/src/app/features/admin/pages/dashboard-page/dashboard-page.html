@@ -1,0 +1,36 @@
+@if (users().length > 0) {
+<main class="flex flex-col items-center md:mt-10 p-6">
+  <h1
+    class="text-4xl md:text-5xl font-extrabold text-gray-800 dark:text-white mb-4 text-center drop-shadow-md"
+  >
+    Panel de Administrador
+  </h1>
+  <p
+    class="text-lg md:text-xl text-gray-600 dark:text-gray-300 text-center max-w-2xl mb-8"
+  >
+    {{ pageDescription() }}
+  </p>
+
+  <h2
+    class="text-2xl md:text-3xl text-gray-600 dark:text-primary text-center max-w-2xl font-serif mb-4"
+  >
+    Estadísticas de CliniCare
+  </h2>
+  <stats />
+
+  <section class="flex md:flex-row flex-col justify-center w-full mt-8 gap-4">
+    <section class="md:w-[50%] w-full md:ml-12">
+      <h2
+        class="text-2xl md:text-3xl text-gray-600 dark:text-primary text-center font-serif mb-4"
+      >
+        Las Especialidades con más Citas
+      </h2>
+      <top-specialities-chart />
+    </section>
+
+    <section class="md:w-[50%] w-full">
+      <admin-calendar class="mx-auto flex justify-center" />
+    </section>
+  </section>
+</main>
+}

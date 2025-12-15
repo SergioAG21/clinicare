@@ -1,0 +1,116 @@
+<div
+  class="bg-white dark:bg-base-200 rounded-3xl shadow-2xl p-6 border border-base-300 hover:border-info hover:shadow-primary/40 transition-all duration-300 w-72 md:w-96 max-w-sm mx-auto"
+>
+  <!-- Header Doctor -->
+  <div class="text-center pb-3">
+    <p class="text-primary font-extrabold text-2xl tracking-tight">
+      {{ appointment().doctorName }}
+    </p>
+    <p class="text-sm text-gray-500 dark:text-gray-400 mt-1 font-medium">
+      {{ appointment().specialityName }}
+    </p>
+  </div>
+
+  <div class="divider text-xs text-secondary/70">Detalles de la Cita</div>
+
+  <!-- Datos -->
+  <div class="space-y-5">
+    <!-- Nombre Paciente -->
+    <div>
+      <p
+        class="text-xs mb-1 text-gray-400 font-semibold uppercase tracking-wider"
+      >
+        Nombre del Paciente
+      </p>
+
+      <p class="text-gray-700 dark:text-gray-200">
+        {{ appointment().patientName }}
+      </p>
+    </div>
+    <!-- Tipo -->
+    <div>
+      <p
+        class="text-xs mb-1 text-gray-400 font-semibold uppercase tracking-wider"
+      >
+        Tipo de Cita
+      </p>
+
+      <p class="text-gray-700 dark:text-gray-200">
+        {{ appointment().appointmentType === "PRESENTIAL" ? 'Consulta
+        Presencial' : 'Consulta por Teléfono' }}
+      </p>
+    </div>
+
+    <!-- Motivo -->
+    <div>
+      <p
+        class="text-xs mb-1 text-gray-400 font-semibold uppercase tracking-wider"
+      >
+        Motivo
+      </p>
+      <p class="text-gray-700 dark:text-gray-200 line-clamp-2 text-sm italic">
+        @if (appointment().reason && appointment().reason.length > 0) { "{{
+        appointment().reason }}" } @else { "Sin Especificar" }
+      </p>
+    </div>
+
+    <!-- Fecha -->
+    <div>
+      <p
+        class="text-xs mb-1 text-gray-400 font-semibold uppercase tracking-wider"
+      >
+        Fecha de la Cita
+      </p>
+      <div class="flex items-center justify-center">
+        <p
+          class="text-gray-900 dark:text-gray-200 flex items-center gap-2 text-sm font-medium"
+        >
+          <span class="material-icons text-secondary text-base"> event </span>
+          <span class="md:text-md text-xs">
+            {{ appointment().appointmentDate | date:'fullDate':undefined:'es-ES'
+            | titlecase }}
+          </span>
+        </p>
+      </div>
+    </div>
+
+    <div>
+      <p
+        class="text-xs mb-1 text-gray-400 font-semibold uppercase tracking-wider"
+      >
+        Tiempo Restante
+      </p>
+
+      <div class="flex items-center justify-center">
+        <div
+          class="badge badge-secondary md:badge-lg px-4 py-3 gap-2 flex items-center text-sm font-semibold"
+        >
+          <span class="material-icons text-xs">schedule</span>
+          <span class="md:text-md text-xs"
+            >{{ appointment().appointmentDate | timeRemaining }}</span
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Botón -->
+  <div class="mt-7 flex justify-center">
+    @if (showCancelButton()) {
+    <button
+      class="btn btn-error btn-sm md:btn-md rounded-xl px-6"
+      (click)="cancelAppointment()"
+    >
+      Cancelar Cita
+    </button>
+    } @if (showDetailsButton()) {
+
+    <button
+      class="btn btn-primary btn-sm md:btn-md rounded-xl px-6"
+      [routerLink]="['/doctor/appointment-details', appointment().id]"
+    >
+      Abrir Consulta
+    </button>
+    }
+  </div>
+</div>

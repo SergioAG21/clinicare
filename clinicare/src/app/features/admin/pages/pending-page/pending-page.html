@@ -1,0 +1,145 @@
+@if (users().length > 0) {
+
+<main class="flex flex-col items-center md:mt-10 mt-20 p-6">
+  <p
+    class="text-4xl md:text-5xl font-extrabold text-gray-800 dark:text-white mb-4 text-center drop-shadow-md"
+  >
+    Usuarios pendientes de Aprobación
+  </p>
+  <p
+    class="text-lg md:text-xl text-gray-600 dark:text-gray-300 text-pretty text-center max-w-2xl mb-8"
+  >
+    {{ pageDescription() }}
+  </p>
+  <div class="overflow-x-auto max-w-7xl w-full">
+    <table class="table">
+      <!-- head -->
+      <thead class="hidden md:table-header-group">
+        <tr class="text-black dark:text-white">
+          <th>Nombre Completo</th>
+          <th>Correo electrónico</th>
+          <th>Fecha de Nacimiento</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+
+      <tbody class="hidden md:table-row-group">
+        @for (user of approvalPendingUsers(); track user.id) {
+        <tr>
+          <td>
+            <div class="flex items-center gap-3">
+              <div>
+                <div class="font-bold text-gray-700 dark:text-gray-300">
+                  {{ user.name }} {{ user.last_name }}
+                </div>
+                <div class="text-sm text-gray-400">{{ user.dni }}</div>
+              </div>
+            </div>
+          </td>
+          <td class="text-gray-700 dark:text-gray-300">{{ user.email }}</td>
+          <td class="text-gray-700 dark:text-gray-300">
+            {{ user.birth_date | date : 'longDate' : undefined : 'es-ES' }}<br />
+            <span class="badge badge-ghost badge-sm"
+              >{{ user.birth_date | age }}</span
+            >
+          </td>
+          <td class="flex flex-col md:flex-row gap-3">
+            <button
+              class="btn btn-info btn-md"
+              [routerLink]="['/user-details', user.id.toString()]"
+            >
+              Consultar Detalles
+            </button>
+            <button
+              class="btn btn-square btn-error btn-md"
+              (click)="deleteUser(user.id.toString())"
+            >
+              <bin-icon />
+            </button>
+          </td>
+        </tr>
+        } @empty {
+        <tr>
+          <td colspan="4" class="text-center py-6">
+            <p class="text-lg md:text-4xl">
+              Todavía no hay usuarios pendientes de aprobación.
+            </p>
+          </td>
+        </tr>
+        }
+      </tbody>
+
+      <!-- Mobile -->
+      <div class="md:hidden flex flex-col items-center gap-4 mt-6">
+        @for (user of approvalPendingUsers(); track user.id) {
+        <div
+          class="w-[90%] max-w-sm p-5 rounded-2xl shadow-lg bg-white dark:bg-neutral-900 border border-gray-100 dark:border-neutral-700 transition-all"
+        >
+          <!-- Header -->
+          <div class="flex items-center gap-4 mb-4">
+            <div>
+              <p class="font-semibold text-lg text-gray-900 dark:text-gray-100">
+                {{ user.name }} {{ user.last_name }}
+              </p>
+              <p class="text-sm text-gray-500 dark:text-gray-400">
+                {{ user.email }}
+              </p>
+            </div>
+          </div>
+
+          <!-- Content -->
+          <div class="space-y-3 text-sm text-gray-700 dark:text-gray-300">
+            <div>
+              <span class="font-medium">Fecha de nacimiento:</span><br />
+              <span class="text-gray-600 dark:text-gray-400">
+                {{ user.birth_date | date : 'longDate' : undefined : 'es-ES' }}
+              </span>
+            </div>
+
+            <div>
+              <span class="font-medium">Edad:</span>
+              <span class="ml-1"> {{ user.birth_date | age }} </span>
+            </div>
+
+            <div>
+              <span class="font-medium">DNI:</span>
+              <span class="ml-1 text-gray-600 dark:text-gray-400">
+                {{ user.dni }}
+              </span>
+            </div>
+          </div>
+
+          <!-- Divider -->
+          <div
+            class="border-t border-gray-200 dark:border-neutral-700 my-4"
+          ></div>
+
+          <!-- Actions -->
+          <div class="flex gap-3 justify-between">
+            <button
+              class="btn btn-info btn-sm w-[50%] md:w-auto"
+              [routerLink]="['/user-details', user.id.toString()]"
+            >
+              Ver Detalles
+            </button>
+
+            <button
+              class="btn btn-error btn-square btn-sm w-[50%] md:w-auto"
+              (click)="deleteUser(user.id.toString())"
+            >
+              <bin-icon />
+            </button>
+          </div>
+        </div>
+        } @empty {
+        <div class="text-center py-10">
+          <p class="text-xl">
+            Todavía no hay usuarios pendientes de aprobación.
+          </p>
+        </div>
+        }
+      </div>
+    </table>
+  </div>
+</main>
+}

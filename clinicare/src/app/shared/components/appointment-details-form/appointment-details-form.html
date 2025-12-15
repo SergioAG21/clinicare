@@ -1,0 +1,96 @@
+<form
+  autocomplete="off"
+  [formGroup]="appointmentDetailForm"
+  (ngSubmit)="submit()"
+>
+  <div class="flex flex-col gap-5 py-4">
+    <!-- Paciente -->
+    <div class="flex flex-col">
+      <label
+        class="input flex items-center gap-3 p-3 border rounded-xl floating-label w-full"
+      >
+        <span class="text-gray-800 dark:text-slate-300"
+          >Nombre completo del Paciente</span
+        >
+        <input
+          type="text"
+          class="grow text-base text-gray-500 dark:text-gray-300 py-3"
+          [value]="appointment()?.patientName"
+          readonly
+        />
+      </label>
+    </div>
+
+    <!-- Fecha y Hora -->
+    <div class="flex flex-col w-full">
+      <label
+        class="input flex items-center gap-3 p-3 border rounded-xl floating-label w-full"
+      >
+        <span class="text-gray-800 dark:text-slate-300">Hora de la Cita</span>
+
+        <input
+          type="text"
+          class="grow text-base text-gray-500 dark:text-gray-300 py-3"
+          [value]="appointment()?.appointmentDate | date:'shortTime':'':'es-ES'"
+          readonly
+        />
+      </label>
+    </div>
+
+    <!-- Motivo -->
+    <div class="flex flex-col">
+      <label class="text-gray-800 dark:text-slate-300"
+        >Motivo de la consulta</label
+      >
+
+      <textarea
+        class="textarea text-base text-gray-500 dark:text-gray-300 border rounded-xl mt-1 resize-none w-full"
+        formControlName="reason"
+        [value]="appointment()?.reason || 'No especificado'"
+        readonly
+      ></textarea>
+    </div>
+
+    <!-- Notas del doctor (resultado) -->
+    <div class="flex flex-col">
+      <label class="text-gray-800 dark:text-slate-300">Notas del Doctor</label>
+
+      <textarea
+        class="textarea text-base text-gray-500 dark:text-gray-300 border rounded-xl mt-1 resize-none w-full"
+        placeholder="Describe los hallazgos, diagnóstico y recomendaciones del paciente..."
+        formControlName="doctorNotes"
+      ></textarea>
+
+      <span class="block text-xs text-error mt-1 min-h-[1rem]">
+        {{ formUtils.getFieldError(appointmentDetailForm, "doctorNotes") }}
+      </span>
+    </div>
+
+    <!-- Estado -->
+    <div class="flex flex-col">
+      <div class="flex flex-col items-center mb-4">
+        <fieldset class="fieldset w-full">
+          <legend class="fieldset-legend">
+            Adjuntar Documentos (Opcional)
+          </legend>
+          <input
+            type="file"
+            accept="application/pdf, image/*"
+            class="file-input file-input-success w-full text-white"
+            formControlName="document"
+            (change)="onFileSelected($event)"
+          />
+        </fieldset>
+      </div>
+    </div>
+  </div>
+
+  <!-- Botón -->
+  <button
+    type="submit"
+    class="btn btn-secondary btn-sm md:btn-md text-base rounded-xl md:w-[75%]"
+    [disabled]="appointmentDetailForm.invalid"
+  >
+    Enviar Formulario
+  </button>
+</form>

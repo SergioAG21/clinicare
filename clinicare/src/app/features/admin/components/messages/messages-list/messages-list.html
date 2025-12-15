@@ -1,0 +1,46 @@
+@if (messages().length > 0) {
+<div class="flex gap-4 mb-6 justify-center">
+  <form class="filter flex justify-center">
+    <input class="btn btn-square" type="reset" value="×" />
+    <input
+      class="btn"
+      type="radio"
+      aria-label="Mensajes Pendientes"
+      name="messages"
+      [class.btn-success]="filterStatus() === MessageStatus.PENDING"
+      (click)="filterStatus.set(MessageStatus.PENDING)"
+    />
+    <input
+      class="btn"
+      type="radio"
+      aria-label="Mensajes Cerrados"
+      name="messages"
+      [class.btn-success]="filterStatus() === MessageStatus.CLOSED"
+      (click)="filterStatus.set(MessageStatus.CLOSED)"
+    />
+    <input
+      class="btn"
+      type="radio"
+      aria-label="Todos los Mensajes"
+      name="messages"
+      [class.btn-success]="filterStatus() === 'ALL'"
+      (click)="filterStatus.set('ALL')"
+    />
+  </form>
+</div>
+
+<div class="flex flex-col md:flex-row flex-wrap justify-center gap-6">
+  @for (message of filteredMessages(); track message.id) {
+  <app-message-card
+    [message]="message"
+    (deletedMessage)="handleDeletedMessage($event)"
+  />
+  } @empty {
+  <p
+    class="text-lg md:text-4xl text-gray-600 dark:text-gray-300 text-pretty text-center max-w-2xl mb-8"
+  >
+    Todavía no hay mensajes
+  </p>
+  }
+</div>
+}

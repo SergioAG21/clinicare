@@ -1,0 +1,246 @@
+@if (userDetails()) {
+<main class="flex flex-col items-center md:mt-10 mt-20 p-6">
+  <p
+    class="max-w-4xl text-4xl md:text-5xl font-extrabold text-white mb-4 text-center drop-shadow-md break-words"
+  >
+    Detalles de
+    <span class="text-primary"
+      >{{userDetails()?.name}} {{userDetails()?.last_name}}</span
+    >
+  </p>
+
+  <p
+    class="text-lg md:text-xl text-gray-600 dark:text-gray-300 text-center max-w-2xl mb-8"
+  >
+    {{ pageDescription() }}
+  </p>
+
+  <!-- Botón volver -->
+  <div class="w-full max-w-4xl mb-6">
+    <app-go-back-button class="flex justify-start" />
+  </div>
+
+  <form
+    class="w-full max-w-2xl dark:bg-[#0A1120] bg-white p-6 sm:p-8 rounded-2xl shadow-xl flex flex-col"
+    autocomplete="off"
+    [formGroup]="userDetailsForm"
+    (ngSubmit)="onSubmit()"
+  >
+    <div class="flex flex-col gap-5 py-4">
+      <!-- Nombre y Apellidos -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <!-- Nombre -->
+        <div class="flex flex-col">
+          <label
+            class="input flex items-center gap-3 p-3 border rounded-xl focus-within:ring-2 focus-within:ring-secondary floating-label"
+          >
+            <span class="text-gray-800 dark:text-slate-300">DNI</span>
+
+            <dni-field-icon />
+
+            <input
+              type="text"
+              class="grow dark:text-base sm:text-md text-gray-400 focus:outline-none py-3"
+              [value]="userDetails()?.dni"
+              readonly
+            />
+          </label>
+          <span class="block text-xs text-error mt-1 min-h-[1rem]"></span>
+        </div>
+
+        <!-- Nombre y Apellidos -->
+        <div class="flex flex-col">
+          <label
+            class="input flex items-center gap-3 p-3 border rounded-xl focus-within:ring-2 focus-within:ring-secondary floating-label"
+          >
+            <span class="text-gray-800 dark:text-slate-300"
+              >Nombre y Apellidos</span
+            >
+
+            <name-field-icon />
+
+            <input
+              type="text"
+              class="grow text-base sm:text-md text-gray-400 focus:outline-none py-3"
+              [value]="userDetails()?.name + ' ' + userDetails()?.last_name"
+              readonly
+            />
+          </label>
+          <span class="block text-xs text-error mt-1 min-h-[1rem]"></span>
+        </div>
+      </div>
+
+      <!-- Fecha de nacimiento -->
+      <div class="flex flex-col">
+        <label
+          class="input flex items-center gap-3 p-3 border rounded-xl focus-within:ring-2 focus-within:ring-secondary w-full floating-label"
+        >
+          <span class="text-gray-800 dark:text-slate-300"
+            >Fecha de Nacimiento</span
+          >
+
+          <birthday-field-icon />
+
+          <input
+            type="date"
+            class="grow text-base sm:text-md text-gray-400 focus:outline-none"
+            [value]="userDetails()?.birth_date | date : 'yyyy-MM-dd'"
+            readonly
+          />
+        </label>
+        <span class="block text-xs text-error mt-1 min-h-[1rem]"></span>
+      </div>
+
+      <!-- Dirección -->
+      <div class="flex flex-col">
+        <label
+          class="input flex items-center gap-3 p-3 border rounded-xl focus-within:ring-2 focus-within:ring-secondary w-full floating-label"
+        >
+          <span class="text-gray-800 dark:text-slate-300">Dirección</span>
+
+          <address-field-icon />
+
+          <input
+            type="text"
+            class="grow text-base sm:text-md text-gray-400 focus:outline-none py-3"
+            [value]="userDetails()?.address"
+            readonly
+          />
+        </label>
+        <span class="block text-xs text-error mt-1 min-h-[1rem]"></span>
+      </div>
+
+      <!-- Teléfono y Género -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <!-- Teléfono -->
+        <div class="flex flex-col">
+          <label
+            class="input flex items-center gap-3 p-3 border rounded-xl focus-within:ring-2 focus-within:ring-secondary floating-label"
+          >
+            <span class="text-gray-800 dark:text-slate-300"
+              >Número de Teléfono</span
+            >
+
+            <mobile-field-icon />
+
+            <input
+              type="tel"
+              class="grow text-base sm:text-md text-gray-400 focus:outline-none py-3"
+              [value]="userDetails()?.phone_number"
+              readonly
+            />
+          </label>
+          <span class="block text-xs text-error mt-1 min-h-[1rem]"></span>
+        </div>
+
+        <!-- Género -->
+        <div class="flex flex-col">
+          <label
+            class="input flex items-center gap-3 p-3 border rounded-xl focus-within:ring-2 focus-within:ring-secondary w-full floating-label"
+          >
+            <span class="text-gray-800 dark:text-slate-300">Género</span>
+
+            <input
+              type="text"
+              class="grow text-base sm:text-md text-gray-400 focus:outline-none py-3"
+              [value]="userDetails()?.gender === USER_GENDER.MAN ? 'Hombre' : 'Mujer'"
+              readonly
+            />
+          </label>
+          <span class="block text-xs text-error mt-1 min-h-[1rem]"></span>
+        </div>
+      </div>
+
+      <!-- Email -->
+      <div class="flex flex-col">
+        <label
+          class="input flex items-center gap-3 p-3 border rounded-xl focus-within:ring-2 focus-within:ring-secondary w-full floating-label"
+        >
+          <span class="text-gray-800 dark:text-slate-300"
+            >Correo Electrónico</span
+          >
+
+          <email-field-icon />
+
+          <input
+            type="email"
+            class="grow text-base sm:text-md text-gray-400 focus:outline-none py-3"
+            placeholder="correo@correo.com"
+            [value]="userDetails()?.email"
+            readonly
+          />
+        </label>
+        <span class="block text-xs text-error mt-1 min-h-[1rem]"></span>
+      </div>
+
+      <!-- Rol -->
+      @if (userDetails()?.roles && userDetails()?.roles?.[0] === "USER") {
+      <div class="flex flex-col w-full">
+        <select
+          class="select text-base sm:text-md w-full"
+          formControlName="role"
+          [value]="userDetails()?.roles?.[0]"
+          [class.text-base]="userDetails()?.roles?.[0]"
+          [class.text-gray-500]="!userDetails()?.roles?.[0]"
+        >
+          <option value="" disabled selected>Selecciona un Rol</option>
+
+          <option value="DOCTOR" class="text-gray-500">Doctor</option>
+          <option value="PATIENT" class="text-gray-500">Paciente</option>
+        </select>
+        <span
+          class="block text-xs text-error mt-1 min-h-[1rem]"
+          [class.opacity-0]="!formUtils.isValidField(userDetailsForm, 'role')"
+        >
+          {{ formUtils.getFieldError(userDetailsForm, "role") }}
+        </span>
+      </div>
+      } @else {
+      <div class="flex flex-col">
+        <label
+          class="input flex items-center gap-3 p-3 border rounded-xl focus-within:ring-2 focus-within:ring-secondary w-full floating-label"
+        >
+          <span class="text-gray-800 dark:text-slate-300">Rol del usuario</span>
+
+          <man-field-icon />
+
+          <input
+            type="text"
+            class="grow text-base sm:text-md text-gray-400 focus:outline-none py-3"
+            placeholder="correo@correo.com"
+            [value]="userDetails()?.roles?.[0] | roleTranslate"
+            readonly
+          />
+        </label>
+        <span class="block text-xs text-error mt-1 min-h-[1rem]"></span>
+      </div>
+      }
+
+      <!-- Imagen de Perfil -->
+      @if (userDetails()?.profile_user_image) {
+      <p class="mx-auto text-gray-800 dark:text-slate-300">
+        Imagen de perfil de {{ userDetails()?.name }}
+      </p>
+      <div class="flex flex-col items-center">
+        <img
+          [src]="userDetails()?.profile_user_image"
+          alt="Foto de perfil"
+          class="size-32 rounded-full object-cover mb-2"
+        />
+      </div>
+      }
+    </div>
+
+    <!-- BOTÓN -->
+    @if (userDetails()?.roles && userDetails()?.roles?.[0] === "USER") {
+    <button
+      type="submit"
+      class="btn btn-secondary py-2 sm:py-3 text-base sm:text-md rounded-xl hover:scale-[102px] transition-transform"
+      [disabled]="userDetailsForm.invalid"
+    >
+      Actualizar Usuario
+    </button>
+    }
+  </form>
+</main>
+}

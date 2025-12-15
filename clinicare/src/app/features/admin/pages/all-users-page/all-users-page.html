@@ -1,0 +1,287 @@
+@if (users().length > 0) {
+<main
+  class="flex flex-col items-center p-6 w-full transition-all duration-500 ease-in-out"
+  [class.opacity-50]="users().length === 0"
+  [class.opacity-100]="users().length > 0"
+  [hidden]="users().length === 0"
+>
+  <p
+    class="text-4xl md:text-5xl font-extrabold text-gray-800 dark:text-white mb-4 text-center drop-shadow-md"
+  >
+    Todos los Usuarios
+  </p>
+  <p
+    class="text-lg md:text-xl text-gray-600 dark:text-gray-300 text-pretty text-center max-w-2xl mb-8"
+  >
+    {{ pageDescription() }}
+  </p>
+  <div class="flex gap-4 mb-6 justify-center">
+    <form class="filter flex justify-center">
+      <input class="btn btn-square" type="reset" value="×" />
+      <input
+        class="btn"
+        type="radio"
+        aria-label="Todos los Usuarios"
+        name="messages"
+        [class.btn-success]="filterStatus() === 'ALL'"
+        (click)="filterStatus.set('ALL')"
+      />
+      <input
+        class="btn"
+        type="radio"
+        aria-label="Usuarios Doctores"
+        name="messages"
+        [class.btn-success]="filterStatus() === UserRole.DOCTOR"
+        (click)="filterStatus.set(UserRole.DOCTOR)"
+      />
+      <input
+        class="btn"
+        type="radio"
+        aria-label="Usuarios Pacientes"
+        name="messages"
+        [class.btn-success]="filterStatus() === UserRole.PATIENT"
+        (click)="filterStatus.set(UserRole.PATIENT)"
+      />
+    </form>
+  </div>
+  <div class="overflow-x-auto max-w-7xl w-full py-3">
+    <!-- Busqueda de Usuarios -->
+    <div class="flex justify-start mb-6 text-gray-700 dark:text-gray-200">
+      <label class="input ml-3 w-[90%] md:w-1/3">
+        <svg
+          class="h-[1.5em] opacity-50"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+        >
+          <g
+            stroke-linejoin="round"
+            stroke-linecap="round"
+            stroke-width="2.5"
+            fill="none"
+            stroke="currentColor"
+          >
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="m21 21-4.3-4.3"></path>
+          </g>
+        </svg>
+        <input
+          #searchInput
+          type="search"
+          class="grow"
+          placeholder="Buscar por nombre, DNI o email..."
+          (input)="searchTerm.set($any($event.target).value)"
+        />
+        <kbd class="kbd kbd-sm">⌘</kbd>
+        <kbd class="kbd kbd-sm">K</kbd>
+      </label>
+    </div>
+    <table class="table">
+      <!-- head -->
+      <thead class="hidden md:table-header-group">
+        <tr class="text-black dark:text-white">
+          <th>Nombre Completo</th>
+          <th>Correo electrónico</th>
+          <th>Fecha de Nacimiento</th>
+          <th>Rol</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+
+      <tbody class="hidden md:table-row-group">
+        @for (user of filteredUsers(); track user.id) {
+        <tr>
+          <td>
+            <div class="flex items-center gap-3">
+              <div class="avatar">
+                <div class="mask mask-squircle size-12">
+                  @if (user.profile_user_image) {
+                  <!--  -->
+                  <img
+                    class="mx-auto mb-3 object-cover cursor-pointer transition-transform duration-300 ease-in-out hover:scale-105 origin-center"
+                    [src]="user.profile_user_image"
+                    [alt]="user.name"
+                    (click)="abrirModal(user.profile_user_image!)"
+                  />
+                  <!--  -->
+                  } @else {
+                  <img
+                    src="https://img.daisyui.com/images/profile/demo/2@94.webp"
+                    alt="Imagen Placeholder de Usuario"
+                  />
+                  }
+                </div>
+              </div>
+              <div>
+                <div class="font-bold text-gray-700 dark:text-gray-300">
+                  {{ user.name }} {{ user.last_name }}
+                </div>
+                <div class="text-sm text-gray-400">{{ user.dni }}</div>
+              </div>
+            </div>
+          </td>
+          <td class="text-gray-700 dark:text-gray-300">{{ user.email }}</td>
+          <td class="text-gray-700 dark:text-gray-300">
+            {{ user.birth_date | date : 'longDate' : undefined : 'es-ES' }}<br />
+            <span class="badge badge-ghost badge-sm"
+              >{{ user.birth_date | age }}</span
+            >
+          </td>
+          <td class="text-gray-700 dark:text-gray-300">
+            {{ user?.roles?.[0] | roleTranslate }}
+          </td>
+          <td class="flex flex-col md:flex-row gap-3">
+            <button
+              class="btn btn-info btn-md"
+              [routerLink]="['/user-details', user.id.toString()]"
+            >
+              Consultar Detalles
+            </button>
+            <button
+              class="btn btn-square btn-error btn-md"
+              (click)="updateUserStatus(user.id.toString())"
+            >
+              <bin-icon />
+            </button>
+          </td>
+        </tr>
+        } @empty {
+        <tr>
+          <td colspan="4" class="text-center py-6">
+            <p class="text-lg md:text-4xl">Todavía no hay usuarios.</p>
+          </td>
+        </tr>
+        }
+      </tbody>
+
+      <!-- Mobile -->
+      <div class="md:hidden flex flex-col items-center gap-4 mt-6">
+        @for (user of filteredUsers(); track user.id) {
+        <div
+          class="w-[90%] max-w-sm p-5 rounded-2xl shadow-lg bg-white dark:bg-neutral-900 border border-gray-100 dark:border-neutral-700 transition-all"
+        >
+          <!-- Header -->
+          <div class="flex items-center gap-4 mb-4 flex-wrap">
+            <div class="avatar mx-auto">
+              <div class="mask mask-squircle size-16">
+                @if (user.profile_user_image) {
+                <!--  -->
+                <img
+                  class="mx-auto mb-3 object-cover cursor-pointer transition-transform duration-300 ease-in-out hover:scale-105 origin-center"
+                  [src]="user.profile_user_image"
+                  [alt]="user.name + ' ' + user.last_name"
+                  (click)="abrirModal(user.profile_user_image!)"
+                />
+                <!--  -->
+                } @else {
+                <img
+                  src="https://img.daisyui.com/images/profile/demo/2@94.webp"
+                  alt="Imagen Placeholder de Usuario"
+                />
+                }
+              </div>
+            </div>
+            <div>
+              <p class="font-semibold text-lg text-gray-900 dark:text-gray-100">
+                {{ user.name }} {{ user.last_name }}
+              </p>
+              <p class="text-sm text-gray-500 dark:text-gray-400">
+                {{ user.email }}
+              </p>
+            </div>
+          </div>
+
+          <!-- Content -->
+          <div class="space-y-3 text-sm text-gray-700 dark:text-gray-300">
+            <div>
+              <span class="font-medium">DNI:</span>
+              <span class="ml-1 text-gray-600 dark:text-gray-400">
+                {{ user.dni }}
+              </span>
+            </div>
+            <div>
+              <span class="font-medium">Rol:</span>
+              <span class="ml-1 text-gray-600 dark:text-gray-400">
+                {{ user?.roles?.[0] | roleTranslate }}
+              </span>
+            </div>
+            <div>
+              <span class="font-medium">Fecha de nacimiento:</span><br />
+              <span class="text-gray-600 dark:text-gray-400">
+                {{ user.birth_date | date : 'longDate' : undefined : 'es-ES' }}
+              </span>
+            </div>
+
+            <div>
+              <span class="font-medium">Edad:</span>
+              <span class="ml-1"> {{ user.birth_date | age }} </span>
+            </div>
+          </div>
+
+          <!-- Divider -->
+          <div
+            class="border-t border-gray-200 dark:border-neutral-700 my-4"
+          ></div>
+
+          <!-- Actions -->
+          <div class="flex gap-3 justify-between">
+            <button
+              class="btn btn-info btn-md w-[50%]"
+              [routerLink]="['/user-details', user.id.toString()]"
+            >
+              Consultar Detalles
+            </button>
+            <button
+              class="btn btn-square btn-error btn-md w-[50%]"
+              (click)="updateUserStatus(user.id.toString())"
+            >
+              <bin-icon />
+            </button>
+          </div>
+        </div>
+        } @empty {
+        <div class="text-center py-10">
+          <p class="text-xl">No hay Usuarios</p>
+        </div>
+        }
+      </div>
+    </table>
+  </div>
+</main>
+}
+
+<!-- Galeria Modal -->
+@if (imagenSeleccionada()) {
+<div
+  class="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 transition-opacity duration-300"
+  (click)="cerrarModal()"
+>
+  <div
+    class="relative bg-gradient-to-b rounded-2xl from-base-200 to-base-300 flex flex-col items-center shadow-xl shadow-indigo-900/50 mx-4"
+    (click)="$event.stopPropagation()"
+  >
+    <!-- Botón cerrar -->
+    <button
+      class="absolute top-6 right-6 bg-black/60 rounded-full size-8 md:size-10 md:text-3xl text-lg font-bold flex items-center justify-center"
+      (click)="cerrarModal()"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        height="24px"
+        viewBox="0 -960 960 960"
+        width="24px"
+        fill="#ffffff"
+      >
+        <path
+          d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"
+        />
+      </svg>
+    </button>
+
+    <img
+      [src]="imagenSeleccionada()"
+      alt="Imagen seleccionada"
+      class="max-h-[80vh] object-contain rounded-lg select-none"
+    />
+  </div>
+</div>
+}

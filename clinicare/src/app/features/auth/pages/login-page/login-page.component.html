@@ -1,0 +1,85 @@
+<form
+  class="w-full max-w-md sm:max-w-lg mx-auto bg-[var(--color-background)] p-6 sm:p-10 rounded-2xl shadow-xl flex flex-col scale-100 sm:scale-105 transition-transform"
+  [formGroup]="loginForm"
+  (ngSubmit)="submit()"
+  autocomplete="off"
+>
+  <p class="text-3xl sm:text-4xl font-semibold text-center mb-6">
+    Iniciar Sesión
+  </p>
+
+  <div class="flex flex-col gap-5 py-4">
+    <!-- EMAIL -->
+    <div class="flex flex-col">
+      <label
+        class="input input-secondary flex items-center gap-3 p-3 border rounded-xl floating-label"
+      >
+        <span>Ingresa tu Email</span>
+
+        <email-field-icon />
+
+        <input
+          type="email"
+          class="grow text-base sm:text-lg py-3 placeholder:text-gray-500 focus:outline-none"
+          placeholder="correo@correo.com"
+          formControlName="email"
+          autocomplete="username"
+        />
+      </label>
+
+      <!-- Error message -->
+      <span
+        class="block text-xs text-error mt-1 min-h-[1rem] transition-opacity duration-300"
+        [class.opacity-0]="!formUtils.isValidField(loginForm, 'email')"
+      >
+        {{ formUtils.getFieldError(loginForm, "email") }}
+      </span>
+    </div>
+
+    <!-- PASSWORD -->
+    <div class="flex flex-col">
+      <label
+        class="input input-secondary flex items-center gap-3 p-3 border rounded-xl floating-label"
+      >
+        <span>Ingresa tu Contraseña</span>
+
+        <password-field-icon />
+
+        <input
+          type="password"
+          class="grow text-base sm:text-lg placeholder:text-gray-500 focus:outline-none"
+          placeholder="••••••••"
+          formControlName="password"
+          autocomplete="current-password"
+        />
+      </label>
+
+      <!-- Error message -->
+      <span
+        class="block text-xs text-error mt-1 min-h-[1rem] transition-opacity duration-300"
+        [class.opacity-0]="!formUtils.isValidField(loginForm, 'password')"
+      >
+        {{ formUtils.getFieldError(loginForm, "password") }}
+      </span>
+    </div>
+  </div>
+
+  <!-- BOTÓN -->
+  <div class="flex flex-col">
+    <button
+      [disabled]="loginForm.invalid"
+      type="submit"
+      class="btn btn-secondary py-3 text-lg rounded-xl hover:scale-105 transition-all duration-300"
+    >
+      Iniciar Sesión
+    </button>
+
+    <a
+      class="text-slate-600 text-sm mt-2 text-center"
+      routerLink="/auth/register"
+    >
+      ¿No tienes una cuenta?
+      <span class="text-info underline">Créala</span>
+    </a>
+  </div>
+</form>

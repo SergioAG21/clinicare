@@ -1,0 +1,15 @@
+<main class="flex flex-col items-center md:mt-10 p-6 w-full">
+  <p
+    class="text-4xl md:text-5xl font-extrabold text-gray-800 dark:text-white mb-4 text-center drop-shadow-md"
+  >
+    Las preguntas de los Usuarios
+  </p>
+  <p
+    class="text-lg md:text-xl text-gray-600 dark:text-gray-300 text-pretty text-center max-w-2xl mb-8"
+  >
+    {{ pageDescription() }}
+  </p>
+  <div class="overflow-x-auto max-w-7xl w-full">
+    <app-messages-list />
+  </div>
+</main>

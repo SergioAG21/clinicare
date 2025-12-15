@@ -1,0 +1,48 @@
+<!-- Panel lateral derecho en desktop -->
+<aside
+  class="min-w-80 p-7 md:p-8 rounded-3xl shadow-2xl backdrop-filter backdrop-blur-3xl bg-white/20 dark:bg-gray-900/30 border border-white/50 dark:border-gray-700/50 text-gray-900 dark:text-white font-sans transition-all duration-300 ease-out hover:shadow-3xl hover:shadow-secondary/40 hover:scale-[1.02] transform mx-auto cursor-pointer gap-3 flex flex-col"
+>
+  <div class="flex flex-col items-center w-full">
+    <p class="text-gray-900 dark:text-gray-400 text-md">Nombre completo</p>
+    <p class="text-gray-700 dark:text-gray-300 text-sm flex">
+      {{ loggedUser()?.name }} {{ loggedUser()?.last_name }}
+      <!--  -->
+      @if (loggedUser()?.gender === USER_GENDER.MALE) {
+      <span><male-icon [size]="18" [color]="'#09f'" /></span>
+      } @else {
+      <span><female-icon [size]="18" [color]="'#e58b8b'" /></span>
+      }
+    </p>
+  </div>
+  <div class="flex flex-col items-center w-full">
+    <p class="text-gray-900 dark:text-gray-400 text-md">DNI</p>
+    <p class="text-gray-700 dark:text-gray-300 text-sm">
+      {{ loggedUser()?.dni }}
+    </p>
+  </div>
+  <div class="flex flex-col items-center w-full">
+    <p class="text-gray-900 dark:text-gray-400 text-md">Correo Electrónico</p>
+    <p class="text-gray-700 dark:text-gray-300 text-sm">
+      {{ loggedUser()?.email }}
+    </p>
+  </div>
+  <div class="flex flex-col items-center w-full">
+    <p class="text-gray-900 dark:text-gray-400 text-md">Fecha de Nacimiento</p>
+    <p class="text-gray-700 dark:text-gray-300 text-sm">
+      {{ loggedUser()?.birth_date | date : 'longDate' : undefined : 'es-ES' }}
+    </p>
+    <p class="badge badge-ghost">{{loggedUser()!.birth_date | age}}</p>
+  </div>
+  <div class="flex flex-col items-center w-full">
+    <p class="text-gray-900 dark:text-gray-400 text-md">Dirección</p>
+    <p class="text-gray-700 dark:text-gray-300 text-sm">
+      {{ loggedUser()?.address }}
+    </p>
+  </div>
+  <div class="flex flex-col items-center w-full">
+    <p class="text-gray-900 dark:text-gray-400 text-md">Número de Teléfono</p>
+    <p class="text-gray-700 dark:text-gray-300 text-sm">
+      {{ loggedUser()?.phone_number }}
+    </p>
+  </div>
+</aside>

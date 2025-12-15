@@ -1,0 +1,19 @@
+<div class="relative flex flex-col items-center p-6">
+  <!-- Contenido principal centrado -->
+  <main class="flex flex-col items-center max-w-4xl text-center">
+    <h1
+      class="text-4xl md:text-5xl font-extrabold text-gray-800 dark:text-white mb-4 drop-shadow-md"
+    >
+      Crear una Cita
+    </h1>
+    <p
+      class="text-lg md:text-xl text-gray-600 dark:text-gray-300 mb-8 text-balance"
+    >
+      {{ pageDescription() }}
+    </p>
+
+    <app-go-back-button class="flex w-full mb-6" />
+
+    <book-appointment-form />
+  </main>
+</div>

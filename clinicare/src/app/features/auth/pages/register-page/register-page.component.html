@@ -1,0 +1,269 @@
+<div
+  class="flex items-center justify-center px-4 sm:px-6 md:px-8 overflow-hidden"
+>
+  <form
+    class="w-full max-w-2xl bg-[var(--color-background)] p-6 sm:p-10 rounded-2xl shadow-xl flex flex-col"
+    [formGroup]="registerForm"
+    (ngSubmit)="submit()"
+    autocomplete="off"
+  >
+    <p class="text-3xl sm:text-4xl font-semibold text-center mb-6">
+      Registrarse
+    </p>
+
+    <div class="flex flex-col gap-5 py-4">
+      <!-- DNI -->
+      <div class="flex flex-col">
+        <label
+          class="input flex items-center gap-3 p-3 border rounded-xl focus-within:ring-2 focus-within:ring-secondary w-full floating-label"
+        >
+          <span>DNI</span>
+
+          <dni-field-icon />
+
+          <input
+            type="text"
+            class="grow text-base sm:text-md placeholder:text-gray-500 focus:outline-none py-3"
+            placeholder="12345678A"
+            formControlName="dni"
+          />
+        </label>
+        <span
+          class="block text-xs text-error mt-1 min-h-[1rem]"
+          [class.opacity-0]="!formUtils.isValidField(registerForm, 'dni')"
+        >
+          {{ formUtils.getFieldError(registerForm, "dni") }}
+        </span>
+      </div>
+
+      <!-- Nombre y Apellidos -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <!-- Nombre -->
+        <div class="flex flex-col">
+          <label
+            class="input flex items-center gap-3 p-3 border rounded-xl focus-within:ring-2 focus-within:ring-secondary floating-label"
+          >
+            <span>Nombre</span>
+
+            <name-field-icon />
+
+            <input
+              type="text"
+              class="grow text-base sm:text-md placeholder:text-gray-500 focus:outline-none py-3"
+              placeholder="Fernando"
+              formControlName="name"
+            />
+          </label>
+          <span
+            class="block text-xs text-error mt-1 min-h-[1rem]"
+            [class.opacity-0]="!formUtils.isValidField(registerForm, 'name')"
+          >
+            {{ formUtils.getFieldError(registerForm, "name") }}
+          </span>
+        </div>
+
+        <!-- Apellidos -->
+        <div class="flex flex-col">
+          <label
+            class="input flex items-center gap-3 p-3 border rounded-xl focus-within:ring-2 focus-within:ring-secondary floating-label"
+          >
+            <span>Apellidos</span>
+
+            <name-field-icon />
+
+            <input
+              type="text"
+              class="grow text-base sm:text-md placeholder:text-gray-500 focus:outline-none py-3"
+              placeholder="Martinez López"
+              formControlName="lastName"
+            />
+          </label>
+          <span
+            class="block text-xs text-error mt-1 min-h-[1rem]"
+            [class.opacity-0]="
+              !formUtils.isValidField(registerForm, 'lastName')
+            "
+          >
+            {{ formUtils.getFieldError(registerForm, "lastName") }}
+          </span>
+        </div>
+      </div>
+
+      <!-- Fecha de nacimiento -->
+      <div class="flex flex-col">
+        <label
+          class="input flex items-center gap-3 p-3 border rounded-xl focus-within:ring-2 focus-within:ring-secondary w-full floating-label"
+        >
+          <span>Fecha de Nacimiento</span>
+
+          <birthday-field-icon />
+
+          <input
+            type="date"
+            class="grow text-base sm:text-md focus:outline-none"
+            [class.text-gray-500]="!registerForm.get('dateOfBirth')?.value"
+            [class.text-white]="registerForm.get('dateOfBirth')?.value"
+            formControlName="dateOfBirth"
+            [max]="currentDate"
+            min="1900"
+          />
+        </label>
+        <span
+          class="block text-xs text-error mt-1 min-h-[1rem]"
+          [class.opacity-0]="
+            !formUtils.isValidField(registerForm, 'dateOfBirth')
+          "
+        >
+          {{ formUtils.getFieldError(registerForm, "dateOfBirth") }}
+        </span>
+      </div>
+
+      <!-- Dirección -->
+      <div class="flex flex-col">
+        <label
+          class="input flex items-center gap-3 p-3 border rounded-xl focus-within:ring-2 focus-within:ring-secondary w-full floating-label"
+        >
+          <span>Dirección</span>
+
+          <address-field-icon />
+
+          <input
+            type="text"
+            class="grow text-base sm:text-md placeholder:text-gray-500 focus:outline-none py-3"
+            placeholder="Calle Mayor 123, Madrid"
+            formControlName="address"
+          />
+        </label>
+        <span
+          class="block text-xs text-error mt-1 min-h-[1rem]"
+          [class.opacity-0]="!formUtils.isValidField(registerForm, 'address')"
+        >
+          {{ formUtils.getFieldError(registerForm, "address") }}
+        </span>
+      </div>
+
+      <!-- Teléfono y Género -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <!-- Teléfono -->
+        <div class="flex flex-col">
+          <label
+            class="input flex items-center gap-3 p-3 border rounded-xl focus-within:ring-2 focus-within:ring-secondary floating-label"
+          >
+            <span>Número de Teléfono</span>
+
+            <mobile-field-icon />
+
+            <input
+              type="tel"
+              class="grow text-base sm:text-md placeholder:text-gray-500 focus:outline-none py-3"
+              placeholder="600123456"
+              formControlName="phoneNumber"
+            />
+          </label>
+          <span
+            class="block text-xs text-error mt-1 min-h-[1rem]"
+            [class.opacity-0]="
+              !formUtils.isValidField(registerForm, 'phoneNumber')
+            "
+          >
+            {{ formUtils.getFieldError(registerForm, "phoneNumber") }}
+          </span>
+        </div>
+
+        <!-- Género -->
+        <div class="flex flex-col">
+          <select
+            class="select text-base sm:text-md"
+            formControlName="gender"
+            [class.text-base]="registerForm.get('gender')?.value"
+            [class.text-gray-500]="!registerForm.get('gender')?.value"
+          >
+            <option value="" disabled selected>Selecciona un Género</option>
+
+            <option value="MALE" class="text-gray-500">
+              <man-field-icon />
+              Hombre
+            </option>
+            <option value="FEMALE" class="text-gray-500">
+              <woman-field-icon />
+              Mujer
+            </option>
+          </select>
+          <span
+            class="block text-xs text-error mt-1 min-h-[1rem]"
+            [class.opacity-0]="!formUtils.isValidField(registerForm, 'gender')"
+          >
+            {{ formUtils.getFieldError(registerForm, "gender") }}
+          </span>
+        </div>
+      </div>
+
+      <!-- Email -->
+      <div class="flex flex-col">
+        <label
+          class="input flex items-center gap-3 p-3 border rounded-xl focus-within:ring-2 focus-within:ring-secondary w-full floating-label"
+        >
+          <span>Correo Electrónico</span>
+
+          <email-field-icon />
+
+          <input
+            type="email"
+            class="grow text-base sm:text-md placeholder:text-gray-500 focus:outline-none py-3"
+            placeholder="correo@correo.com"
+            formControlName="email"
+          />
+        </label>
+        <span
+          class="block text-xs text-error mt-1 min-h-[1rem]"
+          [class.opacity-0]="!formUtils.isValidField(registerForm, 'email')"
+        >
+          {{ formUtils.getFieldError(registerForm, "email") }}
+        </span>
+      </div>
+
+      <!-- Password -->
+      <div class="flex flex-col">
+        <label
+          class="input flex items-center gap-3 p-3 border rounded-xl focus-within:ring-2 focus-within:ring-secondary w-full floating-label"
+        >
+          <span>Contraseña</span>
+
+          <password-field-icon />
+
+          <input
+            type="password"
+            class="grow text-base sm:text-md placeholder:text-gray-500 focus:outline-none py-3"
+            placeholder="••••••••"
+            formControlName="password"
+          />
+        </label>
+        <span
+          class="block text-xs text-error mt-1 min-h-[1rem]"
+          [class.opacity-0]="!formUtils.isValidField(registerForm, 'password')"
+        >
+          {{ formUtils.getFieldError(registerForm, "password") }}
+        </span>
+      </div>
+    </div>
+
+    <!-- BOTÓN -->
+    <div class="flex flex-col">
+      <button
+        [disabled]="registerForm.invalid"
+        type="submit"
+        class="btn btn-secondary py-2 sm:py-3 text-base sm:text-md rounded-xl hover:scale-105 transition-transform"
+      >
+        Registrarse
+      </button>
+
+      <a
+        class="text-slate-600 text-sm mt-2 text-center"
+        routerLink="/auth/login"
+      >
+        ¿Ya tienes una cuenta?
+        <span class="text-info underline">Inicia sesión</span>
+      </a>
+    </div>
+  </form>
+</div>

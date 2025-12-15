@@ -1,0 +1,17 @@
+<time
+  class="min-w-80 p-7 md:p-8 rounded-3xl shadow-2xl backdrop-filter backdrop-blur-3xl bg-white/20 dark:bg-gray-900/30 border border-white/50 dark:border-gray-700/50 text-gray-900 dark:text-white font-sans transition-all duration-300 ease-out hover:shadow-3xl hover:shadow-secondary/40 hover:scale-[1.02] transform block w-full max-w-sm mx-auto cursor-pointer"
+  [dateTime]="time() + ' ' + date()"
+>
+  <div
+    class="text-6xl md:text-7xl font-light mb-1 tracking-tighter text-center"
+    aria-label="Hora actual"
+  >
+    {{time()}}
+  </div>
+  <div
+    class="text-base md:text-lg font-normal opacity-85 mt-2 tracking-wide text-center"
+    aria-label="Fecha actual"
+  >
+    {{ date() | date : 'fullDate' : undefined : 'es-ES' | titlecase }}
+  </div>
+</time>

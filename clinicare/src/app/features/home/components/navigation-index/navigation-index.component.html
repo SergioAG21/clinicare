@@ -1,0 +1,113 @@
+<nav
+  class="fixed top-0 right-0 z-50 flex h-full w-3/4 flex-col justify-center border-l border-white/20 bg-white/70 p-8 pt-12 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] md:relative md:h-auto md:w-auto md:flex-row md:items-center md:border-none md:bg-transparent md:p-0 md:shadow-none md:backdrop-blur-none"
+  [ngClass]="{
+    'translate-x-0': mobileMenuOpen,
+    'translate-x-full md:translate-x-0': !mobileMenuOpen
+  }"
+>
+  <!-- Botón de cierre -->
+  <button
+    class="absolute top-5 right-6 cursor-pointer border-none bg-transparent text-3xl text-gray-800 transition-transform duration-200 hover:rotate-90 md:hidden"
+    (click)="toggleMobileMenu()"
+  >
+    ✕
+  </button>
+
+  <ul
+    class="flex w-full flex-col gap-6 md:w-auto md:flex-row md:items-center md:gap-5"
+  >
+    <li class="flex justify-center">
+      <a
+        href="#about"
+        (click)="onLinkClick(); toggleMobileMenu()"
+        class="flex items-center gap-2 text-gray-800 linea-hover"
+      >
+        <about-icon size="28px" />
+        Nosotros
+      </a>
+    </li>
+
+    <li class="flex justify-center">
+      <a
+        href="#doctors"
+        (click)="onLinkClick(); toggleMobileMenu()"
+        class="flex items-center gap-2 text-gray-800 linea-hover"
+      >
+        <doctor-icon size="24px" />
+        Doctores
+      </a>
+    </li>
+
+    <li class="flex justify-center">
+      <a
+        href="#location"
+        (click)="onLinkClick(); toggleMobileMenu()"
+        class="flex items-center gap-2 text-gray-800 linea-hover"
+      >
+        <location-icon size="28px" />
+        Ubicación
+      </a>
+    </li>
+
+    <li class="flex justify-center">
+      <a
+        href="#contact"
+        (click)="onLinkClick(); toggleMobileMenu()"
+        class="flex items-center gap-2 text-gray-800 linea-hover"
+      >
+        <contact-icon size="28px" />
+        Contáctanos
+      </a>
+    </li>
+
+    <div class="flex gap-4 flex-col md:flex-row md:items-center">
+      @if (!isUserLogged()) {
+      <li>
+        <button
+          class="btn btn-primary w-full text-gray-300 dark:text-gray-900 hover:text-white hover:shadow-[0_4px_15px_rgba(0,0,0,0.15)] transition-all duration-300 hover:scale-[1.03]"
+          (click)="onLinkClick()"
+          [routerLink]="['/auth/register']"
+        >
+          Registrarse
+        </button>
+      </li>
+      } @else {
+      <button
+        class="btn btn-secondary text-gray-900 hover:text-white hover:shadow-[0_4px_15px_rgba(0,0,0,0.15)] transition-all duration-300 hover:scale-[1.03]"
+        (click)="goToProfile()"
+      >
+        Ir al Dashboard
+      </button>
+      }
+
+      <li>
+        @if (!isUserLogged()) {
+        <button
+          class="btn btn-secondary w-full text-gray-300 dark:text-gray-900 hover:text-white hover:shadow-[0_4px_15px_rgba(0,0,0,0.15)] transition-all duration-300 hover:scale-[1.03]"
+          (click)="onLinkClick()"
+          [routerLink]="['/auth/login']"
+        >
+          Iniciar Sesión
+        </button>
+        } @else {
+        <button
+          class="btn btn-error w-full text-gray-900 hover:text-white hover:shadow-[0_4px_15px_rgba(0,0,0,0.15)] transition-all duration-300 hover:scale-[1.03]"
+          (click)="onLinkClick(); logout()"
+        >
+          Cerrar Sesión
+        </button>
+        }
+      </li>
+    </div>
+  </ul>
+</nav>
+
+<!-- Overlay con blur y opacidad -->
+<div
+  class="fixed inset-0 z-40 bg-black/40 backdrop-blur-xl opacity-0 transition-opacity duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] md:hidden"
+  [ngClass]="{
+    'opacity-100 visible': mobileMenuOpen,
+    'opacity-0 invisible': !mobileMenuOpen
+  }"
+  (click)="toggleMobileMenu()"
+></div>

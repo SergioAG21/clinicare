@@ -1,0 +1,109 @@
+<main class="flex flex-col items-center md:mt-10 mt-20">
+  <p
+    class="max-w-4xl text-4xl md:text-5xl font-extrabold text-gray-800 dark:text-white mb-4 text-center drop-shadow-md"
+  >
+    Detalles del mensaje enviado por
+  </p>
+
+  <p
+    class="max-w-4xl text-4xl md:text-5xl font-extrabold text-primary mb-4 text-center drop-shadow-md break-words"
+  >
+    {{ message()?.name }}
+  </p>
+
+  <!-- Botón volver -->
+  <div class="w-full max-w-4xl mb-6">
+    <app-go-back-button class="flex justify-start" />
+  </div>
+
+  <form
+    class="w-full max-w-2xl dark:bg-[#0A1120] bg-white p-6 sm:p-10 rounded-2xl shadow-xl flex flex-col"
+    (ngSubmit)="sendMessage()"
+    autocomplete="off"
+    [formGroup]="replyForm"
+  >
+    <p
+      class="text-3xl sm:text-4xl font-semibold text-center mb-6 dark:text-info text-secondary"
+    >
+      Responder Mensaje
+    </p>
+
+    <div class="flex flex-col gap-5 py-4">
+      <!-- Asunto -->
+      <div class="flex flex-col">
+        <label
+          class="input flex items-center gap-3 p-3 border rounded-xl w-full label bg-gray-300 mb-3"
+        >
+          <span class="!bg-gray-300 text-gray-500">Nombre</span>
+
+          <input
+            type="text"
+            class="grow text-base sm:text-md focus:outline-none py-3 cursor-not-allowed text-gray-500"
+            [value]="message()?.name"
+            readonly
+          />
+        </label>
+      </div>
+
+      <!-- Asunto -->
+      <div class="flex flex-col">
+        <label
+          class="input flex items-center gap-3 p-3 border rounded-xl focus-within:ring-2 focus-within:ring-secondary w-full label bg-gray-300 mb-3"
+        >
+          <span class="!bg-gray-300 text-gray-500">Email</span>
+
+          <input
+            type="text"
+            class="grow text-base sm:text-md focus:outline-none py-3 cursor-not-allowed text-gray-500"
+            [value]="message()?.email"
+            readonly
+          />
+        </label>
+      </div>
+
+      <label class="text-gray-400"
+        >Mensaje del Remitente
+
+        <textarea
+          class="textarea w-full bg-gray-300 grow text-base sm:text-md placeholder:text-gray-500 py-3 text-gray-500 cursor-not-allowed resize-none border rounded-xl focus-within:ring-2 focus-within:ring-secondary mb-3"
+          placeholder="Escribe tu mensaje aquí..."
+          [value]="message()?.message"
+          readonly
+        ></textarea>
+      </label>
+
+      <label class="text-gray-400"
+        >Mensaje de Respuesta
+
+        <textarea
+          class="textarea w-full bg-gray-300 grow text-base sm:text-md placeholder:text-gray-500 py-3 text-gray-800 resize-none border rounded-xl focus-within:ring-2 focus-within:ring-secondary"
+          placeholder="Escribe tu respuesta aquí..."
+          formControlName="answer"
+        ></textarea>
+        <span
+          class="block text-xs text-error mt-1 min-h-[1rem]"
+          [class.opacity-0]="
+              !formUtils.isValidField(replyForm, 'answer')
+            "
+        >
+          {{ formUtils.getFieldError(replyForm, "answer") }}
+        </span>
+      </label>
+
+      <!-- BOTÓN -->
+      <div class="flex flex-col">
+        <button
+          [class.bg-secondary]="replyForm.invalid"
+          [class.opacity-80]="replyForm.invalid"
+          [class.text-gray-800]="replyForm.invalid"
+          [class.pointer-events-none]="replyForm.invalid"
+          [class.cursor-not-allowed]="replyForm.invalid"
+          type="submit"
+          class="btn btn-secondary py-2 sm:py-3 text-base sm:text-md rounded-xl hover:scale-[102px] transition-transform"
+        >
+          Enviar Respuesta
+        </button>
+      </div>
+    </div>
+  </form>
+</main>

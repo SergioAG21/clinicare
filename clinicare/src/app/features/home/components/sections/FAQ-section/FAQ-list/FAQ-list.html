@@ -1,0 +1,8 @@
+@for (frequestQuestion of frequestQuestions(); track $index) {
+
+<faq-item
+  class="w-full min-h-[500px]"
+  [question]="frequestQuestion.question"
+  [answer]="frequestQuestion.answer"
+/>
+}

@@ -1,0 +1,81 @@
+<div
+  class="stats shadow-2xl w-full backdrop-filter backdrop-blur-3xl bg-white/20 dark:bg-gray-900/30 border border-white/50 dark:border-gray-700/50 rounded-3xl transition-all duration-500 hover:shadow-primary/10 cursor-pointer flex flex-wrap gap-4 p-4 overflow-hidden"
+>
+  <div class="stat place-items-center flex-1 min-w-[200px]">
+    <div
+      class="stat-title text-sm md:text-base font-normal opacity-85 text-gray-900 dark:text-gray-300 text-center tracking-wide mb-1"
+    >
+      Usuarios Activos
+    </div>
+    <div
+      class="stat-value text-4xl md:text-5xl font-light text-indigo-500 dark:text-indigo-400 text-center"
+    >
+      {{usersCount()}}
+    </div>
+  </div>
+
+  <div class="stat place-items-center flex-1 min-w-[200px]">
+    <div
+      class="stat-title text-sm md:text-base font-normal opacity-85 text-gray-900 dark:text-gray-300 text-center tracking-wide mb-1"
+    >
+      Usuarios Doctores
+    </div>
+    <div
+      class="stat-value text-4xl md:text-5xl font-light text-blue-500 dark:text-blue-400 text-center"
+    >
+      {{doctorsCount()}}
+    </div>
+  </div>
+
+  <div class="stat place-items-center flex-1 min-w-[200px]">
+    <div
+      class="stat-title text-sm md:text-base font-normal opacity-85 text-gray-900 dark:text-gray-300 text-center tracking-wide mb-1"
+    >
+      Usuarios Pacientes
+    </div>
+    <div
+      class="stat-value text-4xl md:text-5xl font-light text-cyan-500 dark:text-cyan-400 text-center"
+    >
+      {{patientsCount()}}
+    </div>
+  </div>
+
+  <div class="stat place-items-center flex-1 min-w-[200px]">
+    <div
+      class="stat-title text-sm md:text-base font-normal opacity-85 text-gray-900 dark:text-gray-300 text-center tracking-wide mb-1"
+    >
+      Usuarios Pendientes
+    </div>
+    <div
+      class="stat-value text-4xl md:text-5xl font-light text-amber-500 dark:text-amber-400 text-center"
+    >
+      {{pendingUsersCount()}}
+    </div>
+  </div>
+
+  <div class="stat place-items-center flex-1 min-w-[200px]">
+    <div
+      class="stat-title text-sm md:text-base font-normal opacity-85 text-gray-900 dark:text-gray-300 text-center tracking-wide mb-1"
+    >
+      Mensajes Pendientes
+    </div>
+    <div
+      class="stat-value text-4xl md:text-5xl font-light text-red-500 dark:text-red-400 text-center"
+    >
+      {{messagesCount()}}
+    </div>
+  </div>
+
+  <div class="stat place-items-center flex-1 min-w-[200px]">
+    <div
+      class="stat-title text-sm md:text-base font-normal opacity-85 text-gray-900 dark:text-gray-300 text-center tracking-wide mb-1"
+    >
+      Total de Citas
+    </div>
+    <div
+      class="stat-value text-4xl md:text-5xl font-light text-purple-500 dark:text-purple-400 text-center"
+    >
+      {{totalAppointmentsCount()}}
+    </div>
+  </div>
+</div>

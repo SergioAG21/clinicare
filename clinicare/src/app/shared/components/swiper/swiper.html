@@ -1,0 +1,46 @@
+<!-- Slider main container Con referencia local -->
+<div class="swiper" #swiperDiv>
+  <!-- Additional required wrapper -->
+  <div class="swiper-wrapper">
+    <!-- Slides -->
+    @for (imagen of images(); track $index) {
+    <div class="swiper-slide">
+      <img
+        [src]="imagen"
+        alt="Imagen {{ $index + 1 }}"
+        class="w-auto object-contain transition-transform duration-300 ease-in-out hover:scale-105 origin-center"
+        (click)="onImageClick(imagen)"
+      />
+      <button
+        class="absolute top-6 right-6 bg-black/60 rounded-full size-8 md:size-10 md:text-3xl text-lg font-bold flex items-center justify-center pointer-events-none"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          height="24px"
+          viewBox="0 -960 960 960"
+          width="24px"
+          fill="#ffffff"
+        >
+          <path
+            d="M120-120v-320h80v184l504-504H520v-80h320v320h-80v-184L256-200h184v80H120Z"
+          />
+        </svg>
+      </button>
+    </div>
+
+    } @empty {
+    <img
+      src="img/placeholder.webp"
+      alt="Placeholder"
+      class="w-auto object-contain transition-transform duration-300 ease-in-out hover:scale-105 origin-center"
+    />
+    }
+  </div>
+  <!-- If we need pagination -->
+  <div class="swiper-pagination"></div>
+
+  @if (images().length > 1) {
+  <div class="swiper-button-prev"></div>
+  <div class="swiper-button-next"></div>
+  }
+</div>

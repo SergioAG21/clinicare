@@ -1,0 +1,127 @@
+<main class="flex flex-col items-center text-center">
+  <h1
+    class="text-4xl md:text-5xl font-extrabold text-gray-800 dark:text-white mb-4 mt-8 drop-shadow-md"
+  >
+    Tu Agenda
+  </h1>
+  <p class="text-lg md:text-xl text-gray-600 dark:text-gray-300 mb-8">
+    {{ pageDescription() }}
+  </p>
+
+  <h2
+    class="text-2xl md:text-3xl text-gray-600 dark:text-primary font-serif mb-6"
+  ></h2>
+
+  <section
+    class="w-full px-4 md:px-0 max-w-6xl flex flex-col items-center gap-6"
+  >
+    <div class="flex flex-col w-full gap-4 md:hidden">
+      @for (appointment of appointments(); track appointment.id) {
+      <appointment-card class="mb-4" [appointment]="appointment" />
+      }
+    </div>
+
+    <div class="w-full hidden md:block">
+      <full-calendar [options]="calendarOptions"></full-calendar>
+    </div>
+  </section>
+</main>
+
+<!-- Modal de detalles de la cita -->
+@if (selectedAppointment()) {
+<div
+  class="fixed inset-0 bg-black/10 backdrop-blur-xs flex justify-center items-center z-50 transition-opacity duration-300"
+  (click)="closeModal()"
+>
+  <div
+    class="relative bg-gradient-to-b from-base-200 to-base-300 rounded-3xl p-6 w-full max-w-md scale-100 shadow-xl shadow-indigo-900/50 mx-4"
+    (click)="$event.stopPropagation()"
+  >
+    <!-- Botón cerrar -->
+    <button
+      (click)="closeModal()"
+      class="absolute top-4 right-4 bg-black/40 hover:bg-black/60 text-white text-2xl rounded-full w-9 h-9 flex items-center justify-center transition"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        height="24px"
+        viewBox="0 -960 960 960"
+        width="24px"
+        fill="#ffffff"
+      >
+        <path
+          d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"
+        />
+      </svg>
+    </button>
+
+    <div class="flex flex-col items-center">
+      <h3
+        class="text-2xl font-bold text-center mt-4 text-black dark:text-white drop-shadow-md"
+      >
+        Nombre del Paciente
+      </h3>
+      <p class="text-center text-secondary font-medium text-lg mb-3">
+        {{ selectedAppointment()?.patientName }}
+      </p>
+      <h3
+        class="text-2xl font-bold text-center mt-4 text-black dark:text-white drop-shadow-md"
+      >
+        Fecha de la Cita
+      </h3>
+      <p class="text-center text-secondary font-medium text-lg mb-3">
+        {{ selectedAppointment()?.appointmentDate |
+        date:'fullDate':undefined:'es-ES' | titlecase}}
+      </p>
+
+      <h3
+        class="text-2xl font-bold text-center mt-4 text-black dark:text-white drop-shadow-md"
+      >
+        Tipo de Consulta
+      </h3>
+      <p class="text-center text-secondary font-medium text-lg mb-3">
+        {{ selectedAppointment()?.appointmentType === 'PRESENTIAL' ? 'Consulta
+        Presencial' : 'Consulta por Teléfono' }}
+      </p>
+
+      <h3
+        class="text-2xl font-bold text-center mt-4 text-black dark:text-white drop-shadow-md"
+      >
+        Motivo de la Cita
+      </h3>
+      <p class="text-center text-secondary font-medium text-lg mb-3">
+        {{ selectedAppointment()?.reason }}
+      </p>
+
+      <h3
+        class="text-2xl font-bold text-center mt-4 text-black dark:text-white drop-shadow-md"
+      >
+        Estado de la Cita
+      </h3>
+
+      <p class="text-center text-secondary font-medium text-lg mb-3">
+        @if (selectedAppointment()?.status === "PENDING") { Pendiente }
+        <!--  -->
+
+        @if (selectedAppointment()?.status === "COMPLETED") { Completada }
+        <!--  -->
+
+        @if (selectedAppointment()?.status === "CANCELLED") { Cancelada }
+      </p>
+
+      @if (selectedAppointment()?.status === "COMPLETED" &&
+      selectedAppointment()?.doctorNotes) {
+      <h3
+        class="text-2xl font-bold text-center mt-4 text-black dark:text-white drop-shadow-md"
+      >
+        Notas del Doctor
+      </h3>
+      <p class="text-center text-secondary font-medium text-lg mb-3">
+        {{ selectedAppointment()?.doctorNotes || 'No hay notas disponibles' }}
+      </p>
+
+      }
+    </div>
+  </div>
+</div>
+}

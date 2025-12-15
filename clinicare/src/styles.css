@@ -1,0 +1,267 @@
+@import "tailwindcss";
+@import "leaflet/dist/leaflet.css";
+@plugin "daisyui" {
+  themes: winter --default, night --prefersdark;
+}
+
+/* Animaciones */
+@layer utilities {
+  @keyframes fadeUp {
+    0% {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-fade-up {
+    animation: fadeUp 0.6s ease-out forwards;
+  }
+}
+
+:root {
+  --background: #ededed;
+  --foreground: oklch(0.21 0.04 265.77);
+
+  ::selection {
+    background: transparent;
+    color: #000;
+  }
+
+  /* Compatibilidad con navegadores basados en WebKit (Chrome, Safari) */
+  ::-webkit-selection {
+    background: transparent;
+    color: #000;
+  }
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: oklch(0.21 0.04 265.77);
+    --foreground: #ededed;
+
+    ::selection {
+      background: transparent;
+      color: #3abdf8;
+    }
+
+    /* Compatibilidad con navegadores basados en WebKit (Chrome, Safari) */
+    ::-webkit-selection {
+      background: transparent;
+      color: #3abdf8;
+    }
+  }
+}
+
+h1.no-select {
+  user-select: none; /* Standard */
+  -webkit-user-select: none; /* Safari/Chrome */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE/Edge */
+}
+
+.swal-popup {
+  background-color: var(--background); /* fondo según DaisyUI */
+}
+
+.swal-title,
+.swal-text {
+  color: var(--foreground); /* texto según DaisyUI */
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+.calendar-transition {
+  transition: opacity 0.2s ease-in-out; /* 200ms de duración */
+}
+.bg-secondary:disabled {
+  @apply opacity-50 pointer-events-none;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Helvetica, sans-serif;
+  scroll-behavior: smooth;
+}
+
+@keyframes breathe {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.breathe-animate {
+  animation: breathe 3s infinite ease-in-out;
+}
+
+@keyframes moveBg {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 100% 50%;
+  }
+}
+
+.animated-bg-login,
+.fondo {
+  background: linear-gradient(45deg, #f4f4f4 20%, #51b04c 50%, #47a4ff 80%);
+  background-size: 200% 200%;
+  animation: moveBg 10s infinite alternate ease-in-out;
+}
+
+.animated-bg-register {
+  background: linear-gradient(45deg, #f4f4f4 20%, #47a4ff 50%, #ec53d0 80%);
+  background-size: 200% 200%;
+  animation: moveBg 10s infinite alternate ease-in-out;
+}
+
+.linea-hover {
+  position: relative;
+}
+
+.text-overflow-ellipsis {
+  display: -webkit-box;
+  font-size: 1.2rem;
+  color: white;
+  margin-bottom: 8px;
+  -webkit-line-clamp: 2;
+  line-clamp: 1;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.linea-hover::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -1px; /* Ajusta la distancia de la línea */
+  width: 0;
+  height: 1.5px; /* Grosor de la línea */
+  background-color: #47a4ff;
+  transition: width 0.3s ease-in-out;
+}
+
+.linea-hover:hover::after {
+  width: 100%;
+}
+
+.hamburger {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .hamburger {
+    display: block;
+    margin-left: auto;
+  }
+}
+
+.fc-col-header-cell-cushion {
+  @apply text-gray-800;
+}
+
+.fc-daygrid-day {
+  @apply bg-transparent;
+}
+
+/* Número del día */
+.fc-daygrid-day-number {
+  @apply text-gray-800;
+}
+
+/* Toolbar */
+.fc-header-toolbar {
+  @apply text-gray-800 dark:text-gray-300;
+}
+
+/* Eventos por defecto */
+.fc-event {
+  @apply text-gray-700 dark:text-white rounded-xl p-1 transition-all duration-300 cursor-pointer;
+}
+.fc-event:hover {
+  @apply bg-success text-white;
+}
+
+.fc-daygrid-day-number {
+  @apply text-gray-800 dark:text-gray-300;
+}
+
+button {
+  cursor: pointer;
+  transition: all 0.1s ease-in-out;
+}
+
+button:hover {
+  transform: scale(1.05);
+}
+
+button:active {
+  transform: scale(0.95);
+}
+
+.weekend-date {
+  background-color: #3f1212 !important;
+  border-radius: 75% !important;
+  color: black !important;
+}
+
+@layer utilities {
+  @keyframes spin-custom {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  .animate-spin-custom {
+    animation: spin-custom 1s linear infinite;
+  }
+
+  @keyframes fade-text {
+    0%,
+    100% {
+      opacity: 0.6;
+    }
+    50% {
+      opacity: 1;
+    }
+  }
+  .animate-fade-text {
+    animation: fade-text 1.5s ease-in-out infinite;
+  }
+}
+
+/* Estilo de selección de texto */
+::selection {
+  /* Fondo cian claro / sutil */
+  background: transparent 90%;
+  /* Color del texto sobre la selección */
+  color: black;
+}
+
+/* Compatibilidad con navegadores basados en WebKit (Chrome, Safari) */
+::-webkit-selection {
+  background: transparent;
+  color: black;
+}

@@ -1,0 +1,69 @@
+<div
+  class="bg-white dark:bg-base-200 rounded-3xl shadow-2xl border border-base-300 hover:border-info hover:shadow-primary/40 transition-all duration-300 w-64 md:w-96 mx-auto mb-8"
+>
+  <div class="card-body text-center overflow-hidden flex flex-col">
+    <h2 class="text-md md:text-lg w-full overflow-hidden mb-2">
+      <p class="text-primary font-extrabold text-2xl tracking-tight">
+        Remitente
+      </p>
+
+      <p class="font-semibold break-words dark:text-gray-200 text-gray-800">
+        {{ message()?.name }}
+      </p>
+
+      <p class="text-gray-500 text-sm break-words">({{ message()?.email }})</p>
+    </h2>
+
+    <div class="divider text-xs text-secondary/70 pointer-events-none">
+      Detalles del Mensaje
+    </div>
+
+    <!-- Vista previa Pregunta -->
+    <p class="text-md md:text-lg text-primary font-bold mt-2">
+      Vista previa del mensaje
+    </p>
+
+    <p
+      class="line-clamp-2 break-words text-sm w-full max-w-[80%] mx-auto overflow-hidden min-h-10 dark:text-gray-200 text-gray-800"
+    >
+      "{{ message()?.message }}"
+    </p>
+
+    <!-- Vista previa Respuesta -->
+    @if (message()?.answer) {
+    <p class="text-md md:text-lg text-primary font-bold mt-2">
+      Vista previa de la respuesta
+    </p>
+
+    <p
+      class="line-clamp-2 break-words text-sm w-full max-w-[80%] mx-auto overflow-hidden min-h-10 dark:text-gray-200 text-gray-800"
+    >
+      "{{ message()?.answer }}"
+    </p>
+    }
+
+    <div class="flex-grow"></div>
+
+    @if (message()?.created_at) {
+    <p class="w-full break-words mb-4 dark:text-gray-200 text-gray-800">
+      <span class="text-secondary font-bold">
+        Hace {{ message()!.created_at | timeAgo }}
+      </span>
+    </p>
+    }
+
+    <div class="card-actions justify-center mt-auto min-h-14">
+      @if(message()?.status === "PENDING") {
+      <button
+        class="btn btn-info btn-md"
+        [routerLink]="['/admin/message', message()?.id]"
+      >
+        Responder
+      </button>
+      }
+      <button class="btn btn-error btn-md" (click)="deleteMessage()">
+        Eliminar
+      </button>
+    </div>
+  </div>
+</div>

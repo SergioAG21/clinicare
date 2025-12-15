@@ -1,0 +1,324 @@
+<form
+  class="w-full max-w-2xl dark:bg-[#0A1120] bg-white p-6 sm:p-8 rounded-2xl shadow-xl flex flex-col"
+  autocomplete="off"
+  [formGroup]="updateUserForm"
+  (ngSubmit)="submit()"
+>
+  <p class="text-3xl sm:text-4xl font-semibold text-center mb-6 text-primary">
+    Tu Información
+  </p>
+
+  <div class="flex flex-col gap-5 py-4">
+    <div class="flex flex-col">
+      <label
+        class="input flex items-center gap-3 p-3 border rounded-xl focus-within:ring-2 focus-within:ring-secondary w-full floating-label"
+      >
+        <span class="text-gray-800 dark:text-slate-300">DNI</span>
+
+        <dni-field-icon />
+
+        <input
+          type="text"
+          class="grow text-base sm:text-md text-gray-400 dark:text-gray-300 focus:outline-none"
+          [value]="currentUser()?.dni"
+          [placeholder]="currentUser()?.dni"
+          formControlName="dni"
+        />
+      </label>
+      <span
+        class="block text-xs text-error mt-1 min-h-[1rem]"
+        [class.opacity-0]="!formUtils.isValidField(updateUserForm, 'dni')"
+      >
+        {{ formUtils.getFieldError(updateUserForm, 'dni') }}
+      </span>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <!-- Nombre -->
+      <div class="flex flex-col">
+        <label
+          class="input flex items-center gap-3 p-3 border rounded-xl focus-within:ring-2 focus-within:ring-secondary floating-label"
+        >
+          <span class="text-gray-800 dark:text-slate-300">Nombre</span>
+
+          <dni-field-icon />
+
+          <input
+            type="text"
+            class="grow dark:text-base sm:text-md text-gray-400 dark:text-gray-300 focus:outline-none py-3"
+            [value]="currentUser()?.name"
+            [placeholder]="currentUser()?.name"
+            formControlName="name"
+          />
+        </label>
+        <span
+          class="block text-xs text-error mt-1 min-h-[1rem]"
+          [class.opacity-0]="!formUtils.isValidField(updateUserForm, 'name')"
+        >
+          {{ formUtils.getFieldError(updateUserForm, 'name') }}
+        </span>
+      </div>
+
+      <!-- Apellidos -->
+      <div class="flex flex-col">
+        <label
+          class="input flex items-center gap-3 p-3 border rounded-xl focus-within:ring-2 focus-within:ring-secondary floating-label"
+        >
+          <span class="text-gray-800 dark:text-slate-300">Apellidos</span>
+
+          <name-field-icon />
+
+          <input
+            type="text"
+            class="grow text-base sm:text-md text-gray-400 dark:text-gray-300 focus:outline-none py-3"
+            [value]="currentUser()?.last_name"
+            [placeholder]="currentUser()?.last_name"
+            formControlName="lastName"
+          />
+        </label>
+
+        <span
+          class="block text-xs text-error mt-1 min-h-[1rem]"
+          [class.opacity-0]="!formUtils.isValidField(updateUserForm, 'lastName')"
+        >
+          {{ formUtils.getFieldError(updateUserForm, 'lastName') }}
+        </span>
+      </div>
+    </div>
+
+    <!-- Fecha de nacimiento -->
+    <div class="flex flex-col">
+      <label
+        class="input flex items-center gap-3 p-3 border rounded-xl focus-within:ring-2 focus-within:ring-secondary w-full floating-label"
+      >
+        <span class="text-gray-800 dark:text-slate-300"
+          >Fecha de Nacimiento</span
+        >
+
+        <birthday-field-icon />
+
+        <input
+          type="date"
+          class="grow text-base sm:text-md text-gray-400 dark:text-gray-300 focus:outline-none"
+          [value]="currentUser()?.birth_date | date : 'yyyy-MM-dd'"
+          [placeholder]="currentUser()?.birth_date | date: 'yyyy-MM-dd'"
+          formControlName="dateOfBirth"
+          [max]="currentDate"
+          min="1900"
+        />
+      </label>
+      <span
+        class="block text-xs text-error mt-1 min-h-[1rem]"
+        [class.opacity-0]="!formUtils.isValidField(updateUserForm, 'dateOfBirth')"
+      >
+        {{ formUtils.getFieldError(updateUserForm, 'dateOfBirth') }}
+      </span>
+    </div>
+
+    <!-- Dirección -->
+    <div class="flex flex-col">
+      <label
+        class="input flex items-center gap-3 p-3 border rounded-xl focus-within:ring-2 focus-within:ring-secondary w-full floating-label"
+      >
+        <span class="text-gray-800 dark:text-slate-300">Dirección</span>
+
+        <address-field-icon />
+
+        <input
+          type="text"
+          class="grow text-base sm:text-md text-gray-400 dark:text-gray-300 focus:outline-none py-3"
+          formControlName="address"
+          [placeholder]="currentUser()?.address"
+          [value]="currentUser()?.address"
+        />
+      </label>
+      <span
+        class="block text-xs text-error mt-1 min-h-[1rem]"
+        [class.opacity-0]="!formUtils.isValidField(updateUserForm, 'address')"
+      >
+        {{ formUtils.getFieldError(updateUserForm, 'address') }}
+      </span>
+    </div>
+
+    <!-- Teléfono y Género -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <!-- Teléfono -->
+      <div class="flex flex-col">
+        <label
+          class="input flex items-center gap-3 p-3 border rounded-xl focus-within:ring-2 focus-within:ring-secondary floating-label"
+        >
+          <span class="text-gray-800 dark:text-slate-300"
+            >Número de Teléfono</span
+          >
+
+          <mobile-field-icon />
+
+          <input
+            type="tel"
+            class="grow text-base sm:text-md text-gray-400 dark:text-gray-300 focus:outline-none py-3"
+            formControlName="phoneNumber"
+            [value]="currentUser()?.phone_number"
+            [placeholder]="currentUser()?.phone_number"
+          />
+        </label>
+        <span
+          class="block text-xs text-error mt-1 min-h-[1rem]"
+          [class.opacity-0]="!formUtils.isValidField(updateUserForm, 'phoneNumber')"
+        >
+          {{ formUtils.getFieldError(updateUserForm, 'phoneNumber') }}
+        </span>
+      </div>
+
+      <div class="flex flex-col">
+        <select
+          class="select text-base sm:text-md"
+          formControlName="gender"
+          [class.text-gray-500]="!updateUserForm.get('gender')?.value"
+        >
+          <option value="" selected disabled>Selecciona un Género</option>
+          <option value="MALE" class="text-gray-500">
+            <man-field-icon />
+            Hombre
+          </option>
+          <option value="FEMALE" class="text-gray-500">
+            <woman-field-icon />
+            Mujer
+          </option>
+        </select>
+
+        <span
+          class="block text-xs text-error mt-1 min-h-[1rem]"
+          [class.opacity-0]="!formUtils.isValidField(updateUserForm, 'gender')"
+        >
+          {{ formUtils.getFieldError(updateUserForm, 'gender') }}
+        </span>
+      </div>
+    </div>
+
+    <!-- Email -->
+    <div class="flex flex-col">
+      <label
+        class="input flex items-center gap-3 p-3 border rounded-xl focus-within:ring-2 focus-within:ring-secondary w-full floating-label"
+      >
+        <span class="text-gray-800 dark:text-slate-300"
+          >Correo Electrónico</span
+        >
+
+        <email-field-icon />
+
+        <input
+          type="email"
+          class="grow text-base sm:text-md text-gray-400 dark:text-gray-300 focus:outline-none py-3"
+          formControlName="email"
+          [placeholder]="currentUser()?.email"
+          [value]="currentUser()?.email"
+        />
+      </label>
+
+      <span
+        class="block text-xs text-error mt-1 min-h-[1rem]"
+        [class.opacity-0]="!formUtils.isValidField(updateUserForm, 'email')"
+      >
+        {{ formUtils.getFieldError(updateUserForm, 'email') }}
+      </span>
+    </div>
+
+    @if (currentUser()?.roles?.[0] === UserRole.DOCTOR) {
+    <div class="flex flex-col">
+      <p class="text-xs">Valor actual: {{currentUser()?.doctor_specialty}}</p>
+      <select
+        class="select text-base sm:text-md w-full"
+        formControlName="speciality"
+        [class.text-gray-500]="!updateUserForm.get('speciality')?.value"
+      >
+        <option value="" selected disabled>¿Cual es tu especialidad?</option>
+        @for (speciality of specialities(); track speciality.id) {
+        <option [value]="speciality.id" class="text-gray-200">
+          {{ speciality.name }}
+        </option>
+        }
+      </select>
+
+      <span
+        class="block text-xs text-error mt-1 min-h-[1rem]"
+        [class.opacity-0]="!formUtils.isValidField(updateUserForm, 'speciality')"
+      >
+        {{ formUtils.getFieldError(updateUserForm, 'speciality') }}
+      </span>
+    </div>
+    }
+
+    <!-- Imagen del usuario -->
+    @if(currentUser()?.roles?.[0] !== UserRole.ADMIN) {
+    <!-- Imagen de usuario -->
+    <div class="flex flex-col items-center mb-4">
+      <fieldset class="fieldset w-full">
+        <legend class="fieldset-legend">Tu Imágen de Perfil</legend>
+        <input
+          type="file"
+          accept="image/*"
+          (change)="onImageSelected($event)"
+          class="file-input file-input-info w-full"
+        />
+      </fieldset>
+
+      @if (imagePreview || currentUser()?.profile_user_image) {
+      <img
+        [src]="imagePreview || currentUser()?.profile_user_image"
+        alt="Foto de perfil"
+        class="size-32 rounded-full object-cover my-4 cursor-pointer transition-transform duration-300 ease-in-out hover:scale-105 origin-center"
+        (click)="abrirModal(currentUser()!.profile_user_image!)"
+      />
+      }
+    </div>
+    }
+  </div>
+
+  <!-- BOTÓN -->
+  <button
+    type="submit"
+    class="btn btn-secondary py-2 sm:py-3 text-base sm:text-md rounded-xl hover:scale-[102px] transition-transform"
+    [disabled]="updateUserForm.invalid"
+  >
+    Enviar Formulario
+  </button>
+</form>
+
+<!-- Imagen Modal -->
+@if (imagenSeleccionada()) {
+<div
+  class="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 transition-opacity duration-300"
+  (click)="cerrarModal()"
+>
+  <div
+    class="relative bg-gradient-to-b rounded-2xl from-base-200 to-base-300 flex flex-col items-center shadow-xl shadow-indigo-900/50 mx-4"
+    (click)="$event.stopPropagation()"
+  >
+    Imagen Anterior
+
+    <!-- Botón cerrar -->
+    <button
+      class="absolute top-8 right-6 bg-black/60 rounded-full size-8 md:size-10 md:text-3xl text-lg font-bold flex items-center justify-center"
+      (click)="cerrarModal()"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        height="24px"
+        viewBox="0 -960 960 960"
+        width="24px"
+        fill="#ffffff"
+      >
+        <path
+          d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"
+        />
+      </svg>
+    </button>
+
+    <img
+      [src]="imagenSeleccionada()"
+      alt="Imagen seleccionada"
+      class="max-h-[80vh] object-contain rounded-lg select-none"
+    />
+  </div>
+</div>
+}

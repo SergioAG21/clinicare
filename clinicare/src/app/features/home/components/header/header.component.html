@@ -1,0 +1,43 @@
+<header
+  class="min-h-28 md:h-24 bg-transparent gap-4 fixed md:flex-row items-center md:justify-between top-0 left-0 right-0 w-full z-[50] transition-all duration-500 flex"
+  [class.bg-white]="isScrolled()"
+  [class.shadow-md]="isScrolled()"
+>
+  <!-- Container -->
+  <div
+    class="m-0 mx-auto w-full max-w-7xl h-full flex items-center justify-evenly md:flex md:flex-row md:justify-between md:px-4"
+  >
+    <!-- LOGO -->
+    <div class="flex items-center gap-3 md:w-1/4 flex-start">
+      <!-- @if (!isHomePage() && isUserLogged()) {
+      <app-go-back-button />
+      } -->
+      <a href="#" class="flex items-center gap-2 hover:no-underline">
+        <img
+          src="/img/Logo.png"
+          alt="Clinicare Logo"
+          loading="lazy"
+          width="120px"
+        />
+      </a>
+    </div>
+
+    <!-- BOTÓN HAMBURGUESA (solo visible en móvil) -->
+    <button
+      class="block border-none text-3xl cursor-pointer md:hidden md:ml-auto ml-20"
+      [class.text-gray-800]="isScrolled()"
+      [class.text-white]="!isScrolled()"
+      (click)="toggleMobileMenu()"
+    >
+      ☰
+    </button>
+
+    <!-- NAV (MENU DE NAVEGACIÓN) -->
+    <navigation-index
+      [isScrolled]="isScrolled()"
+      [mobileMenuOpen]="mobileMenuOpen"
+      (closeMenu)="mobileMenuOpen = false"
+      class="z-[55]"
+    ></navigation-index>
+  </div>
+</header>

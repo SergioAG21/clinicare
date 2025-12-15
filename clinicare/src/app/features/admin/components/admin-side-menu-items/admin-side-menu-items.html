@@ -1,0 +1,33 @@
+<side-menu-item
+  route="/admin/dashboard"
+  titulo="Dashboard"
+  subtitulo="Resumen general"
+>
+  <menu-icon color="#8184FB" />
+</side-menu-item>
+
+<side-menu-item
+  route="/admin/all-users"
+  titulo="Todos los usuarios"
+  subtitulo="Todos los usuarios registrados"
+>
+  <about-icon color="#8184FB" size="24px" />
+</side-menu-item>
+
+<side-menu-item
+  route="/admin/pending"
+  titulo="Pendientes"
+  subtitulo="Usuarios pendientes de aprobación"
+  [count]="userPendingCount()"
+>
+  <pending-icon color="#8184FB" />
+</side-menu-item>
+
+<side-menu-item
+  route="/admin/messages"
+  titulo="Mensajes"
+  subtitulo="Mensajes de los Usuarios"
+  [count]="messagesCount()"
+>
+  <message-icon color="#8184FB" />
+</side-menu-item>

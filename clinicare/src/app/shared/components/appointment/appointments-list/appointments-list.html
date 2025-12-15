@@ -1,0 +1,11 @@
+<div class="flex flex-col md:flex-row flex-wrap justify-center gap-6">
+  @for (appointment of appointments(); track appointment.id) {
+  <!--  -->
+  @if (appointment.status === appointmentStatus.PENDING) {
+  <appointment-card
+    [appointment]="appointment"
+    (canceledAppointment)="handleDeletedMessage($event)"
+    [showCancelButton]="true"
+  />
+  } }
+</div>

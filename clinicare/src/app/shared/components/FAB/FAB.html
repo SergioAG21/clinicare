@@ -1,0 +1,41 @@
+<div class="fab fab-flower">
+  <!-- a focusable div with tabindex is necessary to work on all browsers. role="button" is necessary for accessibility -->
+  <div tabindex="0" role="button" class="btn btn-lg btn-info btn-circle">
+    <menu-icon />
+  </div>
+
+  <!-- Main Action button replaces the original button when FAB is open -->
+  <button class="fab-main-action btn btn-circle btn-lg btn-info">
+    <close-icon size="32" />
+  </button>
+
+  <!-- buttons that show up when FAB is open -->
+  <div class="tooltip tooltip-left" data-tip="Ir a Contacto">
+    <button class="btn btn-lg btn-circle btn-warning">
+      <a href="#contact">
+        <contact-icon size="24" />
+      </a>
+    </button>
+  </div>
+  <div class="tooltip tooltip-left" data-tip="Ir a Ubicación">
+    <button class="btn btn-lg btn-circle btn-success">
+      <a href="#location">
+        <location-icon size="24" />
+      </a>
+    </button>
+  </div>
+  <div class="tooltip" data-tip="Ir a Doctores">
+    <button class="btn btn-lg btn-circle btn-error">
+      <a href="#doctors">
+        <doctor-icon size="24" />
+      </a>
+    </button>
+  </div>
+  <div class="tooltip" data-tip="Ir a Nosotros">
+    <button class="btn btn-lg btn-circle btn-accent">
+      <a href="#about">
+        <about-icon size="24" />
+      </a>
+    </button>
+  </div>
+</div>

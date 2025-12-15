@@ -1,0 +1,156 @@
+<div class="relative w-full">
+  <div
+    class="input flex items-center gap-3 p-3 border rounded-xl w-full cursor-pointer transition-all duration-200"
+    [ngClass]="{
+      'border-gray-300 dark:border-gray-700 focus-within:ring-secondary': !showPicker,
+      'ring-2 ring-secondary border-secondary': showPicker
+    }"
+    (click)="togglePicker()"
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="h-6 w-6 text-gray-500 dark:text-gray-400"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+      <line x1="16" y1="2" x2="16" y2="6"></line>
+      <line x1="8" y1="2" x2="8" y2="6"></line>
+      <line x1="3" y1="10" x2="21" y2="10"></line>
+    </svg>
+
+    <input
+      type="text"
+      [value]="displayDate"
+      readonly
+      class="grow text-base sm:text-md text-gray-600 dark:text-gray-300 focus:outline-none bg-transparent cursor-pointer"
+      placeholder="Selecciona la fecha y hora"
+    />
+  </div>
+
+  <div
+    *ngIf="showPicker"
+    class="absolute z-50 w-full max-w-sm right-0 dark:bg-[#0A1120] bg-white p-4 rounded-2xl shadow-2xl border dark:border-gray-700 bottom-full mb-2 transition-opacity calendar-transition"
+  >
+    <div
+      [ngClass]="{ 'opacity-0': isTransitioning, 'opacity-100': !isTransitioning }"
+      class="flex justify-between items-center mb-4 calendar-transition"
+    >
+      <button
+        type="button"
+        class="text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 p-2 rounded-full transition"
+        (click)="prevMonth()"
+        [disabled]="isMonthInPast()"
+        [ngClass]="{ 'opacity-40 cursor-not-allowed': isMonthInPast() }"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-5 w-5"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M15 19l-7-7 7-7"
+          />
+        </svg>
+      </button>
+      <div class="font-semibold text-lg text-gray-900 dark:text-white">
+        {{ currentMonthYear }}
+      </div>
+      <button
+        type="button"
+        class="text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 p-2 rounded-full transition"
+        (click)="nextMonth()"
+        [disabled]="isMonthTooFarFuture()"
+        [ngClass]="{ 'opacity-40 cursor-not-allowed': isMonthTooFarFuture() }"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-5 w-5"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M9 5l7 7-7 7"
+          />
+        </svg>
+      </button>
+    </div>
+
+    <div
+      class="grid grid-cols-7 gap-1 text-center text-xs font-medium text-gray-500 dark:text-gray-400 mb-2"
+    >
+      <span class="w-full">Lun</span>
+      <span class="w-full">Mar</span>
+      <span class="w-full">Mié</span>
+      <span class="w-full">Jue</span>
+      <span class="w-full">Vie</span>
+      <span class="w-full text-red-500 dark:text-red-400">Sáb</span>
+      <span class="w-full text-red-500 dark:text-red-400">Dom</span>
+    </div>
+
+    <div class="grid grid-cols-7 gap-1 text-sm">
+      <div
+        *ngFor="let day of getPaddingDays()"
+        class="text-center p-2 rounded-lg text-gray-400 dark:text-gray-600 cursor-default"
+      >
+        {{ day }}
+      </div>
+
+      <button
+        *ngFor="let day of getDaysInMonth()"
+        type="button"
+        class="text-center p-2 rounded-lg transition duration-150 ease-in-out hover:bg-secondary/20 dark:hover:bg-secondary/40"
+        [ngClass]="{
+        'bg-secondary text-white hover:bg-secondary/80': day === selectedDay,
+        'text-red-500 dark:text-red-400': !isColorUpdating && isWeekend(day) && day !== selectedDay,
+        'text-gray-900 dark:text-white': !isColorUpdating && !isWeekend(day) && day !== selectedDay,
+        'cursor-pointer': true,
+        'opacity-50 pointer-events-none cursor-not-allowed':
+            isWeekend(day) ||
+            (day < today.getDate() && isSameDay(currentViewDate, today)) ||
+            (day > oneYearFromNow.getDate() && isSameDay(currentViewDate, oneYearFromNow))
+        }"
+        (click)="selectDay(day)"
+      >
+        {{ day }}
+      </button>
+    </div>
+
+    <hr class="my-4 dark:border-gray-700" />
+
+    <div class="flex flex-col gap-2">
+      <label class="text-gray-800 dark:text-slate-300 font-medium"
+        >Selecciona la Hora:</label
+      >
+      <select
+        class="select w-full text-base dark:bg-gray-800 border rounded-xl p-3 text-gray-600 dark:text-gray-300"
+        [value]="selectedTime"
+        (change)="onTimeChange($event)"
+        [disabled]="!selectedDay"
+        [class.opacity-50]="!selectedDay"
+        [class.pointer-events-none]="!selectedDay"
+      >
+        <option
+          *ngFor="let time of availableTimes"
+          [value]="time"
+          class="text-gray-600 dark:text-gray-200"
+        >
+          {{ time }}
+        </option>
+      </select>
+    </div>
+  </div>
+</div>
