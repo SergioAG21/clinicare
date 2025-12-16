@@ -80,10 +80,6 @@ export class UserService {
   }
 
   updateUserRolesById(id: string, userData: any) {
-    return this.http.put(`${this.apiUsersUrl}/${id}/roles`, userData).pipe(
-      tap((data) => {
-        console.log(data);
-      })
-    );
+    return this.http.put(`${this.apiUsersUrl}/${id}/roles`, userData);
   }
 }

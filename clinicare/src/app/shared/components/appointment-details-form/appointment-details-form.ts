@@ -68,7 +68,6 @@ export class AppointmentDetailsForm {
     this.appointmentService
       .getAppointmentById(this.appointmentId)
       .subscribe((data) => {
-        console.log(data);
         this.appointment.set(data);
       });
   }

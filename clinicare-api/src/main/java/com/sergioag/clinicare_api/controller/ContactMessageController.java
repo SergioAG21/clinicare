@@ -1,11 +1,9 @@
 package com.sergioag.clinicare_api.controller;
 
 import com.sergioag.clinicare_api.dto.ContactMessageResponseDTO;
-import com.sergioag.clinicare_api.dto.email.EmailDTO;
 import com.sergioag.clinicare_api.entity.ContactMessage;
 import com.sergioag.clinicare_api.mapper.ContactMessageMapper;
 import com.sergioag.clinicare_api.service.ContactService;
-import com.sergioag.clinicare_api.service.EmailService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
@@ -23,13 +21,11 @@ import java.util.Optional;
 @Tag(name = "Mensajes de Contacto", description = "Gestión de los mensajes de Contacto")
 public class ContactMessageController {
     private final ContactService contactService;
-    private final EmailService emailService;
     private final ContactMessageMapper contactMessageMapper;
 
-    public ContactMessageController(ContactService contactService, ContactMessageMapper contactMessageMapper, EmailService emailService) {
+    public ContactMessageController(ContactService contactService, ContactMessageMapper contactMessageMapper) {
         this.contactService = contactService;
         this.contactMessageMapper = contactMessageMapper;
-        this.emailService = emailService;
     }
 
     @GetMapping
@@ -60,7 +56,7 @@ public class ContactMessageController {
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         Optional<ContactMessage> contactMessageOptional = contactService.findById(id);
 
-        if(!contactMessageOptional.isPresent()) {
+        if (!contactMessageOptional.isPresent()) {
             return ResponseEntity.notFound().build();
         }
 
@@ -71,7 +67,7 @@ public class ContactMessageController {
     @PostMapping("/send")
     @Operation(summary = "Guarda el mensaje")
     public ResponseEntity<?> save(@RequestBody ContactMessage message, BindingResult result) {
-        if(result.hasErrors()) {
+        if (result.hasErrors()) {
             return validation(result);
         }
 
@@ -80,11 +76,12 @@ public class ContactMessageController {
 
     @PostMapping("/answer/{id}")
     @Operation(summary = "Respuesta del mensaje por ID")
-    public ResponseEntity<?> answer(@PathVariable Long id, @RequestBody Map<String, String> body, BindingResult result) {
+    public ResponseEntity<?> answer(@PathVariable Long id, @RequestBody Map<String, String> body,
+            BindingResult result) {
 
         String answer = body.get("answer");
 
-        if(result.hasErrors()) {
+        if (result.hasErrors()) {
             return validation(result);
         }
 
@@ -92,7 +89,6 @@ public class ContactMessageController {
 
         return ResponseEntity.ok(updated);
     }
-
 
     private ResponseEntity<?> validation(BindingResult result) {
         Map<String, String> errors = new HashMap<>();

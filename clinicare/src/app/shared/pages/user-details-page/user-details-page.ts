@@ -81,8 +81,6 @@ export default class UserDetailsPage implements OnInit {
 
   private getUserDetails(id: string) {
     this.userService.getUserById(id).subscribe((data) => {
-      console.log(data);
-
       this.userDetails.set(data as User);
     });
   }

@@ -51,16 +51,12 @@ export default class PatientMedicalHistoryPage implements OnInit {
         )
       )
       .subscribe((data) => {
-        console.log(data);
-
         this.medicalHistory.set(data);
       });
   }
 
   getPatientById(patientId: number) {
     this.userService.getUserById(patientId.toString()).subscribe((data) => {
-      console.log(data);
-
       this.patient.set(data);
     });
   }

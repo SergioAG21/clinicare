@@ -14,7 +14,6 @@ public class OpenApiConfig {
                 .info(new Info()
                         .title("CliniCare API")
                         .version("1.0.0")
-                        .description("API para la gestión de Clinicare, citas médicas, pacientes, etc.")
-                );
+                        .description("API para la gestión de Clinicare, citas médicas, pacientes, etc."));
     }
 }

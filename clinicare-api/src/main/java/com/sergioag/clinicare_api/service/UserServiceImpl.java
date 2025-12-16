@@ -28,8 +28,9 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final EmailService emailService;
 
-
-    public UserServiceImpl(UserRepository userRepository, SpecialtyRepository specialtyRepository, UserRoleRepository userRoleRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, EmailService emailService) {
+    public UserServiceImpl(UserRepository userRepository, SpecialtyRepository specialtyRepository,
+            UserRoleRepository userRoleRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder,
+            EmailService emailService) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
@@ -56,7 +57,8 @@ public class UserServiceImpl implements UserService {
         String email = authentication.getName();
 
         return userRepository.findByEmail(email)
-                .orElseThrow(() -> new EmailNotFoundException("El usuario con email no está registrado o no está confirmado"));
+                .orElseThrow(() -> new EmailNotFoundException(
+                        "El usuario con email no está registrado o no está confirmado"));
     }
 
     @Override
@@ -148,12 +150,11 @@ public class UserServiceImpl implements UserService {
         Map<String, String> roleTranslations = Map.of(
                 "DOCTOR", "Doctor",
                 "PATIENT", "Paciente",
-                "ADMIN", "Administrador"
-        );
+                "ADMIN", "Administrador");
 
         // Extraer nombres de roles desde userRoles y traducirlos
         Set<String> translatedRoles = user.getUserRoles().stream()
-                .map(ur -> ur.getRole().getName())               // obtenemos el nombre del rol
+                .map(ur -> ur.getRole().getName()) // obtenemos el nombre del rol
                 .map(roleName -> roleTranslations.getOrDefault(roleName, roleName)) // traducimos
                 .collect(Collectors.toSet());
 
@@ -165,8 +166,7 @@ public class UserServiceImpl implements UserService {
                     user.getEmail(),
                     "Se ha verificado tu registro en CliniCare",
                     "bienvenida",
-                    variables
-            );
+                    variables);
         } catch (Exception e) {
             System.err.println("Error al enviar email: " + e.getMessage());
         }
@@ -186,37 +186,6 @@ public class UserServiceImpl implements UserService {
         user.setStatus(UserStatus.INCOMPLETE);
 
         return userRepository.save(user);
-    }
-
-    @Override
-    @Transactional
-    public void assignPatientToDoctor(Long patientId, Long doctorId) {
-        User patient = userRepository.findById(patientId)
-                .orElseThrow(() -> new NoSuchElementException("Paciente no encontrado con id: " + patientId));
-
-        User doctor = userRepository.findById(doctorId)
-                .orElseThrow(() -> new NoSuchElementException("Doctor no encontrado con id: " + doctorId));
-
-        // Validar roles
-        boolean isPatient = patient.getUserRoles().stream()
-                .anyMatch(ur -> "PATIENT".equalsIgnoreCase(ur.getRole().getName()));
-        boolean isDoctor = doctor.getUserRoles().stream()
-                .anyMatch(ur -> "DOCTOR".equalsIgnoreCase(ur.getRole().getName()));
-
-        if (!isPatient) {
-            throw new IllegalArgumentException("El usuario no es un paciente");
-        }
-        if (!isDoctor) {
-            throw new IllegalArgumentException("El usuario no es un doctor");
-        }
-
-        // Añadir paciente al doctor y viceversa
-        doctor.getPatients().add(patient);
-        patient.getDoctors().add(doctor);
-
-        // Guardar ambos
-        userRepository.save(doctor);
-        userRepository.save(patient);
     }
 
     @Override

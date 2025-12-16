@@ -16,7 +16,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -33,7 +32,8 @@ public class AppointmentController {
     private final AppointmentMapper appointmentMapper;
     private final AppointmentRepository appointmentRepository;
 
-    AppointmentController(AppointmentService appointmentService, AppointmentMapper appointmentMapper, AppointmentRepository appointmentRepository) {
+    AppointmentController(AppointmentService appointmentService, AppointmentMapper appointmentMapper,
+            AppointmentRepository appointmentRepository) {
         this.appointmentService = appointmentService;
         this.appointmentMapper = appointmentMapper;
         this.appointmentRepository = appointmentRepository;
@@ -61,7 +61,6 @@ public class AppointmentController {
                 .toList();
     }
 
-
     @GetMapping("/{id}")
     @Operation(summary = "Obtiene una cita por su ID")
     public AppointmentResponseDTO getAppointmentById(@PathVariable Long id) {
@@ -76,11 +75,12 @@ public class AppointmentController {
 
     @PutMapping("/notes/{id}")
     @Operation(summary = "Agregar notas del Doctor por ID de la Cita")
-    public ResponseEntity<?> addDoctorNotes(@PathVariable Long id, @RequestBody Map<String, String> body, BindingResult result) {
+    public ResponseEntity<?> addDoctorNotes(@PathVariable Long id, @RequestBody Map<String, String> body,
+            BindingResult result) {
 
         String doctorNotes = body.get("doctorNotes");
 
-        if(result.hasErrors()) {
+        if (result.hasErrors()) {
             return validation(result);
         }
 
@@ -93,8 +93,7 @@ public class AppointmentController {
     @Operation(summary = "Subir un documento PDF o imagen")
     public ResponseEntity<?> uploadDocument(
             @PathVariable Long id,
-            @RequestParam("file") MultipartFile file
-    ) {
+            @RequestParam("file") MultipartFile file) {
         try {
             if (file.isEmpty()) {
                 return ResponseEntity.badRequest().body("El archivo está vacío");
@@ -106,15 +105,13 @@ public class AppointmentController {
                     "image/png",
                     "image/jpeg",
                     "image/jpg",
-                    "image/webp"
-            );
+                    "image/webp");
 
             String mimeType = file.getContentType();
 
             if (mimeType == null || !allowedTypes.contains(mimeType)) {
                 return ResponseEntity.badRequest().body(
-                        "Formato no permitido. Solo se aceptan PDF o imágenes (PNG, JPG, JPEG, WEBP)"
-                );
+                        "Formato no permitido. Solo se aceptan PDF o imágenes (PNG, JPG, JPEG, WEBP)");
             }
 
             // Mantener nombre original pero evitar problemas
@@ -139,8 +136,7 @@ public class AppointmentController {
 
             return ResponseEntity.ok(Map.of(
                     "message", "Archivo subido correctamente",
-                    "url", publicUrl
-            ));
+                    "url", publicUrl));
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -148,7 +144,6 @@ public class AppointmentController {
                     .body("Error al subir el documento: " + e.getMessage());
         }
     }
-
 
     @GetMapping("{id}/download-document")
     @Operation(summary = "Descargar el documento adjunto de una cita")
@@ -194,10 +189,6 @@ public class AppointmentController {
                     .body("Error al descargar el documento: " + e.getMessage());
         }
     }
-
-
-
-
 
     @GetMapping("/speciality/{id}")
     @Operation(summary = "Obtiene Citas por Especialidad", description = "Indicando el ID de la Especialidad obtiene las Citas")

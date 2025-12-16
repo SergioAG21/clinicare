@@ -12,12 +12,10 @@ import com.sergioag.clinicare_api.repository.AppointmentRepository;
 import com.sergioag.clinicare_api.repository.UserRepository;
 import com.sergioag.clinicare_api.repository.UserRoleRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 @Service
 public class AppointmentServiceImpl implements AppointmentService {
@@ -27,9 +25,9 @@ public class AppointmentServiceImpl implements AppointmentService {
     private final UserRoleRepository userRoleRepository;
 
     public AppointmentServiceImpl(AppointmentRepository appointmentRepository,
-                                  UserRepository userRepository,
-                                  AppointmentMapper appointmentMapper,
-                                  UserRoleRepository userRoleRepository) {
+            UserRepository userRepository,
+            AppointmentMapper appointmentMapper,
+            UserRoleRepository userRoleRepository) {
         this.appointmentRepository = appointmentRepository;
         this.userRepository = userRepository;
         this.appointmentMapper = appointmentMapper;
@@ -69,7 +67,6 @@ public class AppointmentServiceImpl implements AppointmentService {
         return appointmentMapper.toResponseDTO(saved);
     }
 
-
     // Obtener Todas las citas
     public List<AppointmentResponseDTO> getAllAppointments() {
         return appointmentMapper.toResponseDTOs(appointmentRepository.findAll());
@@ -78,15 +75,13 @@ public class AppointmentServiceImpl implements AppointmentService {
     // Obtener Todas las citas de cada paciente
     public List<AppointmentResponseDTO> getAppointmentsByPatientId(Long patientId) {
         return appointmentMapper.toResponseDTOs(
-                appointmentRepository.findByPatientId(patientId)
-        );
+                appointmentRepository.findByPatientId(patientId));
     }
 
     // Obtener todas las citas de cada doctor
     public List<AppointmentResponseDTO> getAppointmentsByDoctorId(Long doctorId) {
         return appointmentMapper.toResponseDTOs(
-                appointmentRepository.findByDoctorId(doctorId)
-        );
+                appointmentRepository.findByDoctorId(doctorId));
     }
 
     // Obtener una cita individual por ID
@@ -99,8 +94,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     // Obtener las citas po ID de la especialidad
     public List<AppointmentResponseDTO> getAppointmentsBySpecialityId(Long specialityId) {
         return appointmentMapper.toResponseDTOs(
-                appointmentRepository.findBySpecialityId(specialityId)
-        );
+                appointmentRepository.findBySpecialityId(specialityId));
     }
 
     // Cancelar la cita

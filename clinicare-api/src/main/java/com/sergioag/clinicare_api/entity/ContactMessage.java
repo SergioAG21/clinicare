@@ -1,7 +1,6 @@
 package com.sergioag.clinicare_api.entity;
 
 import com.sergioag.clinicare_api.enums.MessageStatus;
-import com.sergioag.clinicare_api.enums.UserStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -11,7 +10,6 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity

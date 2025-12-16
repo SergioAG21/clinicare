@@ -40,8 +40,6 @@ export default class DashboardPage implements OnInit {
 
   getAllUsers() {
     this.userService.getAllUsers().subscribe((data) => {
-      console.log(data);
-
       this.users.set(data as User[]);
     });
   }

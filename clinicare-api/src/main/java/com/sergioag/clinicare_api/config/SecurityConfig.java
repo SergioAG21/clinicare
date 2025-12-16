@@ -49,8 +49,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/patient/**").hasRole("PATIENT")
 
                         // Cualquier otra ruta requiere autenticación
-                        .anyRequest().authenticated()
-                )
+                        .anyRequest().authenticated())
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
@@ -66,7 +65,6 @@ public class SecurityConfig {
         return provider;
     }
 
-    // Expose AuthenticationManager if you need to use it manually (AuthController)
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
@@ -78,4 +76,3 @@ public class SecurityConfig {
     }
 
 }
-

@@ -69,8 +69,6 @@ export default class TodayAppointmentsPage implements OnInit {
               new Date(b.appointmentDate).getTime()
           );
 
-        console.log(todayAppointments);
-
         this.appointments.set(todayAppointments);
       });
   }

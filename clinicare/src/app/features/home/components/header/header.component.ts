@@ -20,6 +20,5 @@ export class HeaderComponent {
 
   toggleMobileMenu() {
     this.mobileMenuOpen = !this.mobileMenuOpen;
-    console.log('Mobile menu is now', this.mobileMenuOpen ? 'open' : 'closed');
   }
 }

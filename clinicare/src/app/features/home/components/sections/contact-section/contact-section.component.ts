@@ -39,8 +39,6 @@ export class ContactSectionComponent {
   submit() {
     const { name = '', email = '', message = '' } = this.contactForm.value;
 
-    console.log({ name, email, message });
-
     this.contactService
       .sendContactMessage({
         name: name!,

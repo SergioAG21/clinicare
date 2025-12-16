@@ -1,6 +1,5 @@
 package com.sergioag.clinicare_api.service;
 
-import com.sergioag.clinicare_api.dto.email.EmailDTO;
 import com.sergioag.clinicare_api.entity.ContactMessage;
 import com.sergioag.clinicare_api.enums.MessageStatus;
 import com.sergioag.clinicare_api.repository.ContactMessageRepository;
@@ -45,7 +44,7 @@ public class ContactServiceImpl implements ContactService {
         messageDB.setStatus(MessageStatus.CLOSED);
         messageDB.getMessage();
 
-        Map<String ,Object> variables = new HashMap<>();
+        Map<String, Object> variables = new HashMap<>();
         variables.put("pregunta", messageDB.getMessage());
         variables.put("respuesta", messageDB.getAnswer());
         variables.put("titulo", "Respuesta a tu consulta en CliniCare");
@@ -57,15 +56,13 @@ public class ContactServiceImpl implements ContactService {
                     messageDB.getEmail(),
                     "Respuesta a tu consulta en CliniCare",
                     "respuesta-consulta",
-                    variables
-            );
+                    variables);
         } catch (Exception e) {
             System.err.println("Error al enviar email: " + e.getMessage());
         }
 
         return contactMessageRepository.save(messageDB);
     }
-
 
     @Override
     public void deleteById(Long id) {

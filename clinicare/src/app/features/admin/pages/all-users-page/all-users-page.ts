@@ -97,8 +97,6 @@ export default class AllUsersPage implements OnInit {
 
   getAllUsers() {
     this.userService.getAllUsers().subscribe((data) => {
-      console.log(data);
-
       this.users.set(data as User[]);
     });
   }

@@ -18,7 +18,7 @@ public class UserRole {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    @JsonBackReference  // ⚡ Evita la recursión infinita
+    @JsonBackReference // Evita la recursión infinita
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private User user;

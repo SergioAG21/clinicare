@@ -43,11 +43,11 @@ public class AuthController {
     private final EmailService emailService;
 
     public AuthController(AuthenticationManager authenticationManager,
-                          JwtService jwtService,
-                          UserRepository userRepository,
-                          PasswordEncoder passwordEncoder,
-                          RoleRepository roleRepository,
-                          EmailService emailService) {
+            JwtService jwtService,
+            UserRepository userRepository,
+            PasswordEncoder passwordEncoder,
+            RoleRepository roleRepository,
+            EmailService emailService) {
         this.authenticationManager = authenticationManager;
         this.jwtService = jwtService;
         this.userRepository = userRepository;
@@ -60,8 +60,7 @@ public class AuthController {
     @Operation(summary = "Login del Usuario y guarda el JWT")
     public AuthResponse login(@RequestBody AuthRequest request) {
         Authentication auth = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
-        );
+                new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
 
         var user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new EmailNotFoundException(
@@ -81,7 +80,6 @@ public class AuthController {
         return new AuthResponse(token);
     }
 
-
     @PostMapping("/register")
     @Operation(summary = "Registro de Usuario y manda un Email")
     public ResponseEntity<Map<String, String>> register(@RequestBody RegisterRequest req) {
@@ -95,7 +93,6 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.CONFLICT)
                     .body(Map.of("message", "El DNI ingresado ya está en uso"));
         } else {
-            // ************* USUARIO ***************
             User user = new User();
             user.setEmail(req.getEmail());
             user.setPassword(passwordEncoder.encode(req.getPassword()));
@@ -111,14 +108,12 @@ public class AuthController {
             Role defaultRole = roleRepository.findByName("USER")
                     .orElseThrow(() -> new RuntimeException("ROLE USER not found"));
 
-            // Crear UserRole para asignar el rol por defecto
             UserRole userRole = new UserRole();
             userRole.setUser(user);
             userRole.setRole(defaultRole);
 
             user.setUserRoles(Set.of(userRole));
 
-            // Envío del email
             Map<String, Object> variables = new HashMap<>();
             variables.put("name", user.getName());
             variables.put("lastName", user.getLastName());
@@ -130,8 +125,7 @@ public class AuthController {
                         user.getEmail(),
                         "Hemos recibido tu solicitud de registro en CliniCare",
                         "registro-pendiente",
-                        variables
-                );
+                        variables);
             } catch (Exception e) {
                 System.err.println("Error al enviar el email: " + e.getMessage());
             }
@@ -142,6 +136,5 @@ public class AuthController {
                     .body(Map.of("message", "Usuario registrado correctamente"));
         }
     }
-
 
 }
